@@ -1,26 +1,105 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Design tokens exported from the Paper file "Billy James Real Estate"
+ * (Design System → Foundations). Mood: "tidewater porch".
+ * Type rule: headings at 500, nothing heavier than 600; emphasize with color.
+ */
+@theme {
+  --color-background: #ffffff;
+  --color-surface: #f6f3ee; /* dune sand */
+  --color-border: #e6e1d8; /* driftwood */
+  --color-muted: #5a6472; /* slate */
+  --color-placeholder: #6b7480;
+  --color-foreground: #13253f; /* ink */
+  --color-primary: #1e4e8c; /* bay navy */
+  --color-primary-hover: #163b6b;
+  --color-accent: #f5b65d; /* porch light — fills only, never text on white */
+  --color-accent-soft: #fcebcf;
+
+  /* Display scale (desktop sizes; pages step down with responsive prefixes). */
+  --text-hero: 4.5rem; /* 72px */
+  --text-hero--line-height: 1.08;
+  --text-hero--letter-spacing: -0.035em;
+  --text-h2: 3rem; /* 48px */
+  --text-h2--line-height: 1.167;
+  --text-h2--letter-spacing: -0.03em;
+  --text-h3: 1.75rem; /* 28px */
+  --text-h3--line-height: 1.36;
+  --text-h3--letter-spacing: -0.02em;
+  --text-title: 1.375rem; /* 22px */
+  --text-title--line-height: 1.36;
+  --text-title--letter-spacing: -0.015em;
+  --text-lead: 1.375rem; /* 22px body lead */
+  --text-lead--line-height: 1.55;
+
+  --tracking-eyebrow: 0.14em;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+
+  --container-content: 90rem; /* 1440px incl. 64px gutters */
 }
 
+/* Font variables come from next/font on <html>, so reference them inline. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background-color: var(--color-accent-soft);
+    color: var(--color-foreground);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/*
+ * Motion (GSAP — see src/components/Motion.tsx).
+ * An inline script adds `motion` to <html> before first paint, only when the visitor
+ * hasn't asked for reduced motion. Animated elements start hidden so they don't
+ * flash, and a fallback reveals them if JavaScript never boots.
+ */
+html.motion [data-intro],
+html.motion [data-split],
+html.motion [data-reveal],
+html.motion [data-reveal-stagger] > *,
+html.motion [data-hero-rise] {
+  visibility: hidden;
+}
+html.motion:not(.motion-ready) :is([data-intro], [data-split], [data-reveal], [data-reveal-stagger] > *, [data-hero-rise]) {
+  animation: motion-fallback 0s linear 2.5s forwards;
+}
+@keyframes motion-fallback {
+  to {
+    visibility: visible;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

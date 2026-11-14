@@ -1,0 +1,151 @@
+/**
+ * Billy's closed deals, from his public Homes.com agent profile
+ * (https://www.homes.com/real-estate-agents/william-james/rrn2jj3/), checked Nov 2026.
+ * Homes.com reports 10 closed sales ($4.4M) over the prior 5 years; these are the
+ * deals it lists by address. Specs/dates are only filled in where verified.
+ *
+ * To add a deal: append an entry, then (optionally) drop a photo in
+ * public/images/listings/ and set `image`. Deals without a photo get an illustrated card.
+ */
+export type DealRole = "seller" | "buyer" | "both";
+
+export type Listing = {
+  slug: string;
+  street: string;
+  city: string;
+  state: "VA";
+  zip?: string;
+  /** Who Billy represented. */
+  role: DealRole;
+  soldPrice: number;
+  listPrice?: number;
+  /** ISO date (YYYY-MM-DD). */
+  soldDate?: string;
+  beds?: number;
+  baths?: number;
+  sqft?: number;
+  yearBuilt?: number;
+  floors?: number;
+  description: string | null;
+  image: { src: string; alt: string; width: number; height: number } | null;
+};
+
+export const HOMES_PROFILE_URL = "https://www.homes.com/real-estate-agents/william-james/rrn2jj3/";
+
+export const listings: Listing[] = [
+  {
+    slug: "1308-meggett-dr-chesapeake-va",
+    street: "1308 Meggett Dr",
+    city: "Chesapeake",
+    state: "VA",
+    zip: "23322",
+    role: "seller",
+    soldPrice: 634900,
+    listPrice: 649900,
+    soldDate: "2026-05-05",
+    beds: 4,
+    baths: 2.5,
+    sqft: 3050,
+    yearBuilt: 2000,
+    floors: 2,
+    description:
+      "This beautifully updated 4-bed, 2.5-bath home offers the perfect blend of modern living and outdoor fun! Inside, enjoy the charm of wood floors and built-in shelves surrounding the cozy gas fireplace, creating a warm and inviting atmosphere.",
+    image: {
+      src: "/images/listings/1308-meggett-dr.jpg",
+      alt: "Two-story brick colonial home with a two-car garage at 1308 Meggett Dr in Chesapeake, Virginia",
+      width: 2361,
+      height: 1667,
+    },
+  },
+  {
+    slug: "919-johnstown-rd-chesapeake-va",
+    street: "919 Johnstown Rd",
+    city: "Chesapeake",
+    state: "VA",
+    zip: "23322",
+    role: "both",
+    soldPrice: 460000,
+    soldDate: "2025-12-08",
+    beds: 4,
+    baths: 2,
+    sqft: 2200,
+    yearBuilt: 1999,
+    floors: 1,
+    // TODO(Billy): the live listing has no description — add one if you'd like.
+    description: null,
+    image: {
+      src: "/images/listings/919-johnstown-rd.jpg",
+      alt: "Single-story brick ranch home with an attached garage at 919 Johnstown Rd in Chesapeake, Virginia",
+      width: 1024,
+      height: 768,
+    },
+  },
+  {
+    slug: "1857-palomino-trl-suffolk-va",
+    street: "1857 Palomino Trail",
+    city: "Suffolk",
+    state: "VA",
+    role: "buyer",
+    soldPrice: 535000,
+    beds: 6,
+    baths: 3.5,
+    sqft: 3990,
+    yearBuilt: 1994,
+    floors: 2,
+    description:
+      "This private retreat offers 6 bedrooms, an office, a bonus room over the garage, and an open-concept layout perfect for modern living. The first-floor media room, complete with a built-in screen, full bar, and full bath, opens to the back deck for seamless entertaining. The primary suite features double walk-in closets and a double-sided fireplace, creating a true owner's retreat. Enjoy outdoor living with a wrap-around front porch, second-floor balcony, and oversized detached garage on a serene wooded lot. Conveniently located near the new Riverside Hospital, downtown Smithfield, and the up-and-coming Carrollton area, this home combines space, privacy, and accessibility.",
+    image: {
+      src: "/images/listings/1857-palomino-trl.jpg",
+      alt: "White farmhouse with a wrap-around porch and fountain on a wooded lot at 1857 Palomino Trail in Suffolk, Virginia",
+      width: 1024,
+      height: 681,
+    },
+  },
+  {
+    slug: "525-queenswood-ter-chesapeake-va",
+    street: "525 Queenswood Terrace",
+    city: "Chesapeake",
+    state: "VA",
+    role: "buyer",
+    soldPrice: 500000,
+    description: null,
+    image: null,
+  },
+  {
+    slug: "925-johnstown-rd-chesapeake-va",
+    street: "925 Johnstown Rd",
+    city: "Chesapeake",
+    state: "VA",
+    role: "buyer",
+    soldPrice: 445000,
+    description: null,
+    image: null,
+  },
+  {
+    slug: "4916-apricot-way-chesapeake-va",
+    street: "4916 Apricot Way",
+    city: "Chesapeake",
+    state: "VA",
+    role: "buyer",
+    soldPrice: 392900,
+    description: null,
+    image: null,
+  },
+];
+
+export const getListing = (slug: string) => listings.find((l) => l.slug === slug);
+
+export const formatPrice = (n: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+
+export const roleLabel: Record<DealRole, string> = {
+  seller: "Represented the seller",
+  buyer: "Represented the buyer",
+  both: "Represented buyer & seller",
+};
+
+/** Short tag shown on the photo. */
+export const roleTag: Record<DealRole, string> = { seller: "Sold", buyer: "Bought", both: "Sold" };
+
+export const formatSoldDate = (iso?: string) =>
+  iso ? new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(`${iso}T00:00:00Z`)) : null;

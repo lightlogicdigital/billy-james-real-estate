@@ -1,69 +1,236 @@
 import Image from "next/image";
+import { ListingCard, NeighborhoodCard, NeighborhoodRow, TestimonialCard } from "@/components/cards";
+import { MotionScope } from "@/components/Motion";
+import { CtaBand, FaqSection, SectionHeader } from "@/components/sections";
+import { ServicesList } from "@/components/ServicesList";
+import { ButtonLink, Container, Eyebrow, Heading, TextLink } from "@/components/ui";
+import { about } from "@/content/about";
+import { home } from "@/content/home";
+import { listings } from "@/content/listings";
+import { neighborhoods } from "@/content/neighborhoods";
+import { services } from "@/content/services";
+import { site } from "@/content/site";
+import { testimonials } from "@/content/testimonials";
 
-export default function Home() {
+export default function HomePage() {
+  const [jacob, david, bob] = testimonials;
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <MotionScope>
+      {/* ---------- Hero: sky, clouds, King Neptune, cut-out homes ---------- */}
+      <section data-hero className="relative isolate h-[800px] overflow-hidden bg-[linear-gradient(180deg,#2B69AE_0%,#4E8BCB_42%,#9CC4EA_78%,#CFE3F5_100%)] md:h-[900px] lg:h-[940px]">
         <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+          src="/images/local/cloud.png"
+          alt=""
+          width={1600}
+          height={1066}
+          data-drift
+          data-depth="far"
+          className="absolute -z-10 hidden w-[280px] opacity-90 md:block md:left-[58%] md:top-[220px] lg:left-[64%] lg:top-[250px]"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <Image
+          src="/images/local/cloud.png"
+          alt=""
+          width={1600}
+          height={1066}
+          data-drift
+          className="absolute -z-10 hidden w-[230px] opacity-70 lg:right-[2%] lg:top-[105px] lg:block"
+        />
+        <Image
+          src="/images/local/king-neptune.png"
+          alt="The King Neptune statue at the Virginia Beach Oceanfront"
+          width={1080}
+          height={1350}
+          loading="eager"
+          sizes="(min-width: 1024px) 532px, (min-width: 768px) 380px, 230px"
+          data-hero-rise
+          data-depth="near"
+          className="absolute left-[47%] top-[548px] z-[3] w-[230px] md:left-[58%] md:top-[400px] md:w-[380px] lg:left-[68%] lg:top-[275px] lg:w-[532px]"
+        />
+        <Image
+          src="/images/local/hero-homes.png"
+          alt="A row of brick and siding homes in a Hampton Roads neighborhood"
+          width={1350}
+          height={956}
+          preload
+          sizes="(min-width: 1600px) 1600px, max(100vw, 700px)"
+          data-hero-rise
+          data-depth="far"
+          className="absolute left-1/2 top-[600px] z-[2] w-[max(100%,700px)] max-w-[1600px] -translate-x-1/2 md:top-[470px] lg:top-[280px]"
+        />
+        <div data-depth="copy" className="relative z-[4]">
+        <Container className="flex flex-col gap-5 pt-[124px] md:gap-7 md:pt-40 lg:pt-[172px]">
+          <div data-intro>
+          <Eyebrow tone="light" className="text-xs md:text-sm">
+            <span className="sm:hidden">{home.hero.eyebrow.replace("Virginia Beach", "VA Beach")}</span>
+            <span className="hidden sm:inline">{home.hero.eyebrow}</span>
+          </Eyebrow>
+          </div>
+          <Heading as="h1" size="hero" split parts={{ lead: home.hero.title.lead, accent: home.hero.title.accent }} accentColor="accent" className="max-w-[920px] text-white" />
+          <p data-intro className="max-w-[580px] text-[17px] leading-[1.55] text-white md:text-xl">{home.hero.lead}</p>
+          <div data-intro className="flex flex-col gap-2.5 pt-1.5 sm:flex-row sm:gap-3.5">
+            <ButtonLink href={home.hero.primaryCta.href} variant="accent">
+              {home.hero.primaryCta.label}
+            </ButtonLink>
+            <ButtonLink href={home.hero.secondaryCta.href} variant="outline-light" className="font-medium">
+              {home.hero.secondaryCta.label}
+            </ButtonLink>
+          </div>
+        </Container>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+      </section>
+
+      {/* ---------- Trust strip ---------- */}
+      <section aria-label="Track record" className="border-b border-border">
+        <Container className="flex flex-col gap-6 py-8 lg:flex-row lg:items-center lg:justify-between lg:py-14">
+          <dl data-reveal-stagger className="flex justify-between gap-4 sm:justify-start sm:gap-12">
+            {site.stats.map((stat, i) => (
+              <div key={stat.label} className="flex flex-col-reverse gap-1 sm:border-l sm:border-border sm:pl-12 sm:first:border-0 sm:first:pl-0">
+                <dt className="text-[13px] leading-snug text-muted md:text-base">{home.trust.statLabels[i]}</dt>
+                <dd data-count className="whitespace-nowrap text-[28px] font-medium leading-none tracking-[-0.03em] text-primary md:text-5xl">
+                  {stat.value === "20+ years" ? "20+ yrs" : stat.value}
+                  {stat.value === "4.9" && (
+                    <span aria-label="stars" className="ml-1 align-middle text-lg text-accent md:text-2xl">
+                      ★
+                    </span>
+                  )}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <div data-reveal className="flex items-center justify-between gap-6 border-t border-border pt-4 sm:justify-start sm:gap-8 lg:border-0 lg:pt-0">
+            <p className="hidden text-sm font-medium uppercase tracking-eyebrow text-muted sm:block">{home.trust.featuredLabel}</p>
+            {site.featuredOn.map((logo) => (
+              <Image key={logo.name} src={logo.src} alt={logo.name} width={logo.width} height={logo.height} className="h-auto w-[92px] lg:w-[110px] last:w-[60px] lg:last:w-[72px]" />
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ---------- Meet Billy ---------- */}
+      <section aria-labelledby="meet-title" className="bg-surface py-14 lg:py-32">
+        <Container className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-24">
+          <div className="relative h-[380px] w-full max-w-[540px] shrink-0 sm:h-[560px] lg:h-[640px]">
             <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+              src={about.photos.atHome.src}
+              alt={about.photos.atHome.alt}
+              width={about.photos.atHome.width}
+              height={about.photos.atHome.height}
+              sizes="(min-width: 1024px) 460px, 75vw"
+              data-reveal
+              className="h-[340px] w-[76%] rounded-md object-cover sm:h-[500px] lg:h-[580px] lg:w-[460px] lg:rounded-lg"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            <figure data-polaroid className="absolute bottom-0 right-0 flex w-[140px] rotate-[4deg] flex-col gap-1.5 rounded-[6px] bg-white p-[7px] pb-2.5 shadow-[0_18px_40px_rgba(19,37,63,0.18)] sm:w-[210px] sm:gap-2.5 sm:p-2.5 sm:pb-3.5 lg:right-0">
+              <Image src={about.photos.sign.src} alt={about.photos.sign.alt} width={720} height={960} sizes="210px" className="aspect-[190/220] w-full rounded-[3px] object-cover" />
+              <figcaption className="text-center text-[11px] font-semibold sm:text-sm">{home.meet.snapshotCaption}</figcaption>
+            </figure>
+          </div>
+          <div data-reveal-stagger className="flex flex-col gap-6 lg:max-w-[660px] lg:gap-7">
+            <Eyebrow>{home.meet.eyebrow}</Eyebrow>
+            <h2 id="meet-title" className="font-display text-[30px] font-medium leading-[1.2] tracking-[-0.03em] md:text-[40px] lg:text-h2">
+              {home.meet.title.lead}
+              <br className="hidden sm:block" /> <span className="text-primary">{home.meet.title.accent}</span> {home.meet.title.tail}
+            </h2>
+            <p className="text-base leading-[1.65] text-muted md:text-lg">{home.meet.body}</p>
+            <ul className="border-t border-border">
+              {home.meet.points.map((point) => (
+                <li key={point} className="flex items-center gap-4 border-b border-border py-4 font-medium">
+                  <span aria-hidden className="size-2 shrink-0 rounded-full bg-accent" />
+                  {point}
+                </li>
+              ))}
+            </ul>
+            <div className="flex items-end justify-between gap-6 pt-2">
+              <div className="flex flex-col gap-1.5">
+                <Image src="/images/brand/signature.png" alt="Billy James signature" width={1092} height={381} className="h-[52px] w-auto lg:h-[77px]" />
+                <span className="text-sm text-muted">{home.meet.signOff}</span>
+              </div>
+              <TextLink href={home.meet.link.href} className="pb-1">
+                {home.meet.link.label}
+              </TextLink>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* ---------- How I help ---------- */}
+      <section aria-labelledby="services-title" className="py-14 lg:py-32">
+        <Container className="flex flex-col gap-10 lg:gap-12">
+          <div data-reveal-stagger className="flex flex-col gap-5">
+            <Eyebrow>{home.services.eyebrow}</Eyebrow>
+            <div id="services-title">
+              <Heading parts={home.services.title} />
+            </div>
+            <p className="max-w-[560px] text-lg leading-[1.65] text-muted">{home.services.lead}</p>
+          </div>
+          <ServicesList services={services} badge={home.services.photoBadge} />
+        </Container>
+      </section>
+
+      {/* ---------- Recently sold ---------- */}
+      <section aria-labelledby="sold-title" className="bg-surface py-14 lg:py-32">
+        <Container className="flex flex-col gap-10 lg:gap-14">
+          <SectionHeader
+            id="sold-title"
+            eyebrow={home.sold.eyebrow}
+            title={home.sold.title}
+            aside={<TextLink href={home.sold.link.href}>{home.sold.link.label}</TextLink>}
+          />
+          <div data-reveal-stagger className="-mr-5 flex snap-x snap-mandatory gap-3.5 overflow-x-auto pb-2 pr-5 [scrollbar-width:none] sm:mr-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:pr-0 lg:grid-cols-3">
+            {listings.slice(0, 3).map((listing, i) => (
+              <ListingCard key={listing.slug} listing={listing} index={i} className="w-[290px] shrink-0 snap-start sm:w-auto" />
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ---------- Neighborhoods ---------- */}
+      <section aria-labelledby="hoods-title" className="py-14 lg:py-32">
+        <Container className="flex flex-col gap-8 lg:gap-14">
+          <SectionHeader id="hoods-title" eyebrow={home.neighborhoods.eyebrow} title={home.neighborhoods.title} aside={home.neighborhoods.lead} />
+          <div data-reveal-stagger className="hidden gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-4">
+            {neighborhoods.map((n) => (
+              <NeighborhoodCard key={n.slug} neighborhood={n} />
+            ))}
+          </div>
+          <div data-reveal-stagger className="border-t border-border sm:hidden">
+            {neighborhoods.map((n) => (
+              <NeighborhoodRow key={n.slug} neighborhood={n} />
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ---------- Testimonials (verbatim excerpts) ---------- */}
+      <section aria-labelledby="kind-words-title" className="bg-surface py-14 lg:py-32">
+        <Container className="flex flex-col gap-10 lg:gap-14">
+          <SectionHeader id="kind-words-title" eyebrow={home.testimonials.eyebrow} title={home.testimonials.title} />
+          <div data-reveal-stagger className="flex flex-col gap-5 lg:flex-row">
+            <div className="lg:flex-[1.5]">
+              <TestimonialCard
+                featured
+                testimonial={bob}
+                excerpt="When it came to selling our home, his sensitivity to our needs and his willingness to do what we needed to sell our house was second to none."
+                highlight="second to none."
+              />
+            </div>
+            <div className="flex flex-col gap-5 lg:flex-1">
+              <TestimonialCard
+                testimonial={jacob}
+                excerpt="He keeps the home buying process enjoyable while also working hard and keeping your best interest in mind."
+                highlight="enjoyable"
+              />
+              <TestimonialCard
+                testimonial={david}
+                excerpt="I have never experienced a real estate relationship like this in my YEARS of buying and selling properties."
+                highlight="YEARS"
+              />
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <FaqSection />
+      <CtaBand />
+    </MotionScope>
   );
 }
