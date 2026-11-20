@@ -175,12 +175,6 @@ export const getListing = (slug: string) => listings.find((l) => l.slug === slug
 export const formatPrice = (n: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
 
-export const roleLabel: Record<DealRole, string> = {
-  seller: "Represented the seller",
-  buyer: "Represented the buyer",
-  both: "Represented buyer & seller",
-};
-
 /** Short tag shown on the photo. */
 export const roleTag: Record<DealRole, string> = { seller: "Sold", buyer: "Bought", both: "Sold" };
 

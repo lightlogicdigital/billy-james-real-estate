@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ListingCard } from "@/components/cards";
 import { MotionScope } from "@/components/Motion";
 import { ButtonLink, Container, Eyebrow } from "@/components/ui";
-import { HOMES_PROFILE_URL, listings } from "@/content/listings";
+import { listings } from "@/content/listings";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -28,12 +28,10 @@ export default function ListingsPage() {
           </p>
         </Container>
         <Container className="mt-10 lg:mt-14">
-          <dl className="grid grid-cols-2 gap-y-6 border-y border-border py-6 md:grid-cols-4 md:py-8" data-reveal-stagger>
+          <dl className="flex flex-wrap gap-x-16 gap-y-6 border-y border-border py-6 md:gap-x-24 md:py-8" data-reveal-stagger>
             {[
               { value: "10", label: "homes closed" },
               { value: "$4.4M", label: "in sales" },
-              { value: "5", label: "for sellers" },
-              { value: "5", label: "for buyers" },
             ].map((s) => (
               <div key={s.label} className="flex flex-col-reverse gap-1">
                 <dt className="text-sm text-muted md:text-base">{s.label}</dt>
@@ -43,13 +41,6 @@ export default function ListingsPage() {
               </div>
             ))}
           </dl>
-          <p className="mt-3 text-sm text-muted">
-            Prior 5 years, per{" "}
-            <a href={HOMES_PROFILE_URL} className="underline underline-offset-4 hover:text-foreground">
-              Billy&apos;s Homes.com profile
-            </a>
-            .
-          </p>
         </Container>
       </section>
 

@@ -7,7 +7,7 @@ import { HomeArt } from "@/components/HomeArt";
 import { JsonLd, listingJsonLd } from "@/components/JsonLd";
 import { MotionScope } from "@/components/Motion";
 import { ButtonLink, Container } from "@/components/ui";
-import { HOMES_PROFILE_URL, formatPrice, formatSoldDate, getListing, listings, roleLabel, roleTag } from "@/content/listings";
+import { HOMES_PROFILE_URL, formatPrice, formatSoldDate, getListing, listings, roleTag } from "@/content/listings";
 import { site } from "@/content/site";
 
 // Static export: only the listed sales are built; anything else is the 404 page.
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps<"/listings/[slug]">
   const specs = listingSpecs(listing).join(", ");
   return {
     title: `${listing.street}, ${listing.city}, ${listing.state}`,
-    description: `Sold for ${formatPrice(listing.soldPrice)}${specs ? ` — ${specs}` : ""} in ${listing.city}, VA. Billy James ${roleLabel[listing.role].toLowerCase()}.`,
+    description: `Sold for ${formatPrice(listing.soldPrice)}${specs ? ` — ${specs}` : ""} in ${listing.city}, VA, with Billy James.`,
     alternates: { canonical: `/listings/${listing.slug}` },
     ...(listing.image && {
       openGraph: { images: [{ url: listing.image.src, width: listing.image.width, height: listing.image.height, alt: listing.image.alt }] },
@@ -107,17 +107,10 @@ export default async function ListingPage({ params }: PageProps<"/listings/[slug
             <div className="flex flex-col gap-4" data-reveal>
               <h2 className="text-sm font-medium uppercase tracking-eyebrow text-primary">About this sale</h2>
               <p className="text-lg leading-[1.6] md:text-lead">
-                {listing.description ??
-                  `A ${listing.city} home that sold for ${formatPrice(listing.soldPrice)}${soldOn ? ` in ${soldOn}` : ""}. Billy ${
-                    listing.role === "buyer"
-                      ? "represented the buyers, guiding them from the first showing through closing."
-                      : listing.role === "both"
-                        ? "represented both the buyer and the seller on this sale."
-                        : "represented the sellers."
-                  }`}
+                {listing.description ?? `A ${listing.city} home that sold for ${formatPrice(listing.soldPrice)}${soldOn ? ` in ${soldOn}` : ""}.`}
               </p>
               <p className="text-sm text-muted">
-                {roleLabel[listing.role]} · Sale data from{" "}
+                Sale data from{" "}
                 <a href={HOMES_PROFILE_URL} className="underline underline-offset-4 hover:text-foreground">
                   Homes.com
                 </a>

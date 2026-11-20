@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatPrice, roleLabel, roleTag, type Listing } from "@/content/listings";
+import { formatPrice, roleTag, type Listing } from "@/content/listings";
 import type { Neighborhood } from "@/content/neighborhoods";
 import { CityArt } from "./CityArt";
 import { HomeArt } from "./HomeArt";
@@ -46,18 +46,20 @@ export function ListingCard({ listing, index = 0, className }: { listing: Listin
           {formatPrice(listing.soldPrice)}
         </p>
       </div>
-      <ul className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-border pt-3.5 text-sm font-medium" aria-label="Deal details">
-        {[...specs, roleLabel[listing.role]].map((item, i) => (
-          <li key={item} className={cn("flex items-center gap-3", i === specs.length && "text-muted")}>
-            {i > 0 && (
-              <span aria-hidden className="text-border">
-                |
-              </span>
-            )}
-            {item}
-          </li>
-        ))}
-      </ul>
+      {specs.length > 0 && (
+        <ul className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-border pt-3.5 text-sm font-medium" aria-label="Home details">
+          {specs.map((item, i) => (
+            <li key={item} className="flex items-center gap-3">
+              {i > 0 && (
+                <span aria-hidden className="text-border">
+                  |
+                </span>
+              )}
+              {item}
+            </li>
+          ))}
+        </ul>
+      )}
       {listing.image?.credit && <p className="-mt-2 text-xs text-muted">Listing courtesy of {listing.image.credit}</p>}
     </Link>
   );
