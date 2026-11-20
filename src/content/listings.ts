@@ -6,6 +6,8 @@
  *
  * To add a deal: append an entry, then (optionally) drop a photo in
  * public/images/listings/ and set `image`. Deals without a photo get an illustrated card.
+ * Photos from another brokerage's listing (buyer-side deals) carry `credit`, shown
+ * with the photo per MLS (REIN) display rules; Billy confirmed he has the rights.
  */
 export type DealRole = "seller" | "buyer" | "both";
 
@@ -27,7 +29,14 @@ export type Listing = {
   yearBuilt?: number;
   floors?: number;
   description: string | null;
-  image: { src: string; alt: string; width: number; height: number } | null;
+  image: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    /** Listing brokerage, for photos from another agent's listing. */
+    credit?: string;
+  } | null;
 };
 
 export const HOMES_PROFILE_URL = "https://www.homes.com/real-estate-agents/william-james/rrn2jj3/";
@@ -108,8 +117,18 @@ export const listings: Listing[] = [
     state: "VA",
     role: "buyer",
     soldPrice: 500000,
+    beds: 4,
+    baths: 2,
+    sqft: 2258,
+    yearBuilt: 1987,
     description: null,
-    image: null,
+    image: {
+      src: "/images/listings/525-queenswood-ter.jpg",
+      alt: "Brick ranch with a two-car garage, bonus room above, and a wide front lawn at 525 Queenswood Terrace in Chesapeake, Virginia",
+      width: 1024,
+      height: 680,
+      credit: "Howard Hanna Real Estate Services",
+    },
   },
   {
     slug: "925-johnstown-rd-chesapeake-va",
@@ -118,8 +137,17 @@ export const listings: Listing[] = [
     state: "VA",
     role: "buyer",
     soldPrice: 445000,
+    beds: 4,
+    baths: 2,
+    sqft: 1612,
     description: null,
-    image: null,
+    image: {
+      src: "/images/listings/925-johnstown-rd.jpg",
+      alt: "White ranch home with a red front door, black shutters, and a one-car garage at 925 Johnstown Road in Chesapeake, Virginia",
+      width: 1024,
+      height: 681,
+      credit: "BHHS RW Towne Realty",
+    },
   },
   {
     slug: "4916-apricot-way-chesapeake-va",
@@ -128,8 +156,17 @@ export const listings: Listing[] = [
     state: "VA",
     role: "buyer",
     soldPrice: 392900,
+    beds: 3,
+    baths: 2.5,
+    sqft: 1642,
     description: null,
-    image: null,
+    image: {
+      src: "/images/listings/4916-apricot-way.jpg",
+      alt: "New two-story townhome with charcoal siding and a white garage door at 4916 Apricot Way in Chesapeake, Virginia",
+      width: 768,
+      height: 768,
+      credit: "Corinth Realty LLC",
+    },
   },
 ];
 

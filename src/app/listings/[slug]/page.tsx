@@ -97,6 +97,7 @@ export default async function ListingPage({ params }: PageProps<"/listings/[slug
               <HomeArt variant={index} label="Photo coming soon" />
             )}
           </div>
+          {listing.image?.credit && <p className="-mt-4 text-xs text-muted">Photo: listing courtesy of {listing.image.credit}</p>}
         </Container>
       </section>
 

@@ -58,6 +58,7 @@ export function ListingCard({ listing, index = 0, className }: { listing: Listin
           </li>
         ))}
       </ul>
+      {listing.image?.credit && <p className="-mt-2 text-xs text-muted">Listing courtesy of {listing.image.credit}</p>}
     </Link>
   );
 }

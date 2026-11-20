@@ -32,8 +32,8 @@ The Properties Sold page now uses the deals on Billy's Homes.com profile
 
 - **Phone mismatch:** Homes.com shows **(757) 982-8478**; the site and yard sign use **757-477-4854**. Which should the site use?
 - **Street spelling:** Homes.com spells it **1308 Meggett Dr** (the old site said "Megette"). The site now uses "Meggett"; the old URL redirects.
-- **Missing details:** beds, baths, square feet, and sale dates for 525 Queenswood Terrace, 925 Johnstown Rd, and 4916 Apricot Way (and the date for 1857 Palomino Trail).
-- **Photos:** those three buyer-side deals show an illustrated card. The Homes.com photos belong to the listing agents — use them only with permission (or send your own).
+- **Missing details:** sale dates for 525 Queenswood Terrace, 925 Johnstown Rd, 4916 Apricot Way, and 1857 Palomino Trail. (Beds, baths and square feet are now filled in.)
+- **Photos:** the three buyer-side deals now use their listing photos with a "Listing courtesy of" credit (Howard Hanna Real Estate Services, BHHS RW Towne Realty, Corinth Realty LLC). Billy confirmed he has the rights to use them; please keep that permission on file.
 - **The other 4 closed sales** aren't listed by address on Homes.com. Send them over if you'd like them on the site.
 
 ## Still missing
