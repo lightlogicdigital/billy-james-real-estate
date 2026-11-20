@@ -8,6 +8,7 @@ import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
+  style: ["normal", "italic"], // italic carries the one emphasized word in homepage headlines
   display: "swap",
   variable: "--font-jakarta",
 });

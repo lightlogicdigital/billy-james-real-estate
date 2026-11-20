@@ -1,14 +1,19 @@
 "use client";
 
-import { useActionState, useId } from "react";
+import { createContext, useActionState, useContext, useId } from "react";
 import { submitContact, submitHomeValue, type FormState } from "@/app/actions";
 import { site } from "@/content/site";
 import { CheckIcon, cn } from "./ui";
 
 const initial: FormState = { status: "idle" };
 
-const inputClass =
+const lightInput =
   "w-full rounded-xl border border-border bg-white px-4 py-3.5 text-base text-foreground placeholder:text-placeholder transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 aria-[invalid=true]:border-[#b42318]";
+const darkInput =
+  "w-full rounded-xl border border-white/25 bg-transparent px-4 py-3.5 text-base text-white placeholder:text-white/55 transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30 aria-[invalid=true]:border-[#ffb4ab]";
+
+/** Ink card variant (homepage "Get in touch"); sub-components read it instead of taking props. */
+const Dark = createContext(false);
 
 function Field({
   label,
@@ -24,16 +29,17 @@ function Field({
   children: (props: { id: string; "aria-invalid"?: boolean; "aria-describedby"?: string }) => React.ReactNode;
 }) {
   const id = useId();
+  const dark = useContext(Dark);
   const errorId = `${id}-error`;
   return (
     <div className="flex flex-1 flex-col gap-2">
-      <label htmlFor={id} className="text-sm font-medium">
+      <label htmlFor={id} className={cn("text-sm", dark ? "font-normal" : "font-medium")}>
         {label}
-        {optional && <span className="font-normal text-muted"> (optional)</span>}
+        {optional && <span className={cn("font-normal", dark ? "text-white/60" : "text-muted")}> (optional)</span>}
       </label>
       {children({ id, "aria-invalid": error ? true : undefined, "aria-describedby": error ? errorId : undefined })}
       {error && (
-        <p id={errorId} className="text-sm text-[#b42318]">
+        <p id={errorId} className={cn("text-sm", dark ? "text-[#ffb4ab]" : "text-[#b42318]")}>
           {error[0]}
         </p>
       )}
@@ -52,14 +58,22 @@ function ChipGroup({
   options: { value: string; label: string }[];
   defaultValue: string;
 }) {
+  const dark = useContext(Dark);
   return (
     <fieldset className="flex flex-col gap-2.5">
-      <legend className="mb-2.5 text-sm font-medium">{legend}</legend>
+      <legend className={cn("mb-2.5 text-sm", dark ? "font-normal" : "font-medium")}>{legend}</legend>
       <div className="flex flex-wrap gap-2">
         {options.map((o) => (
           <label key={o.value} className="cursor-pointer">
             <input type="radio" name={name} value={o.value} defaultChecked={o.value === defaultValue} className="peer sr-only" />
-            <span className="inline-flex rounded-full border border-border px-4 py-2.5 text-sm font-medium transition-colors peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary hover:border-foreground">
+            <span
+              className={cn(
+                "inline-flex rounded-full border px-4 py-2.5 text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2",
+                dark
+                  ? "border-white/25 text-white peer-checked:border-accent peer-checked:bg-accent peer-checked:text-foreground peer-focus-visible:outline-accent hover:border-white/60"
+                  : "border-border font-medium peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-white peer-focus-visible:outline-primary hover:border-foreground",
+              )}
+            >
               {o.label}
             </span>
           </label>
@@ -82,11 +96,17 @@ function Honeypot() {
 }
 
 function SubmitButton({ pending, children }: { pending: boolean; children: React.ReactNode }) {
+  const dark = useContext(Dark);
   return (
     <button
       type="submit"
       disabled={pending}
-      className="flex w-full items-center justify-center rounded-full bg-primary px-6 py-4 font-semibold text-white transition-colors hover:bg-primary-hover disabled:opacity-70"
+      className={cn(
+        "flex items-center justify-center rounded-full transition-colors disabled:opacity-70",
+        dark
+          ? "self-start bg-white px-[26px] py-3 text-[15px] text-foreground hover:bg-mist"
+          : "w-full bg-primary px-6 py-4 font-semibold text-white hover:bg-primary-hover",
+      )}
     >
       {pending ? "Sending…" : children}
     </button>
@@ -94,15 +114,16 @@ function SubmitButton({ pending, children }: { pending: boolean; children: React
 }
 
 function Success({ message }: { message?: string }) {
+  const dark = useContext(Dark);
   return (
     <div role="status" className="flex flex-col items-start gap-4 py-6">
       <span className="flex size-12 items-center justify-center rounded-full bg-accent">
         <CheckIcon className="size-5 text-foreground" />
       </span>
-      <p className="text-h3 font-medium">{message ?? "Thanks — I'll be in touch soon."}</p>
-      <p className="text-muted">
+      <p className={cn("text-h3", dark ? "font-normal" : "font-medium")}>{message ?? "Thanks — I'll be in touch soon."}</p>
+      <p className={dark ? "text-white/75" : "text-muted"}>
         Need me sooner? Call or text{" "}
-        <a href={site.phoneHref} className="font-semibold text-primary">
+        <a href={site.phoneHref} className={cn("font-semibold", dark ? "text-accent" : "text-primary")}>
           {site.phone}
         </a>
         .
@@ -111,13 +132,33 @@ function Success({ message }: { message?: string }) {
   );
 }
 
-export function ContactForm({ className }: { className?: string }) {
+export function ContactForm({
+  className,
+  dark = false,
+  title = "Send me a note",
+}: {
+  className?: string;
+  /** Ink card (homepage). */
+  dark?: boolean;
+  /** Pass null when the surrounding section already titles the form. */
+  title?: string | null;
+}) {
   const [state, action, pending] = useActionState(submitContact, initial);
   const v = state.values ?? {};
   const e = state.errors ?? {};
+  const inputClass = dark ? darkInput : lightInput;
   return (
-    <div className={cn("relative rounded-lg border border-border bg-white p-6 shadow-[0_24px_60px_rgba(19,37,63,0.08)] md:p-10", className)}>
-      <h2 className="mb-5 text-2xl font-medium tracking-[-0.02em] md:text-h3">Send me a note</h2>
+    <Dark.Provider value={dark}>
+    <div
+      className={cn(
+        "relative",
+        dark
+          ? "rounded-[24px] bg-foreground p-6 text-white sm:rounded-[28px] md:p-8"
+          : "rounded-lg border border-border bg-white p-6 shadow-[0_24px_60px_rgba(19,37,63,0.08)] md:p-10",
+        className,
+      )}
+    >
+      {title && <h2 className="mb-5 text-2xl font-medium tracking-[-0.02em] md:text-h3">{title}</h2>}
       {state.status === "success" ? (
         <Success message={state.message} />
       ) : (
@@ -158,14 +199,15 @@ export function ContactForm({ className }: { className?: string }) {
             )}
           </Field>
           {state.status === "error" && state.message && (
-            <p role="alert" className="text-sm font-medium text-[#b42318]">
+            <p role="alert" className={cn("text-sm font-medium", dark ? "text-[#ffb4ab]" : "text-[#b42318]")}>
               {state.message}
             </p>
           )}
-          <SubmitButton pending={pending}>Send message</SubmitButton>
+          <SubmitButton pending={pending}>{dark ? "Send note" : "Send message"}</SubmitButton>
         </form>
       )}
     </div>
+    </Dark.Provider>
   );
 }
 
@@ -173,6 +215,7 @@ export function HomeValueForm({ className }: { className?: string }) {
   const [state, action, pending] = useActionState(submitHomeValue, initial);
   const v = state.values ?? {};
   const e = state.errors ?? {};
+  const inputClass = lightInput;
   return (
     <div className={cn("relative rounded-lg bg-white p-6 shadow-[0_24px_60px_rgba(19,37,63,0.10)] md:p-10", className)}>
       <div className="mb-5 flex flex-col gap-1.5">

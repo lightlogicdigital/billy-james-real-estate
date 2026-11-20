@@ -9,11 +9,14 @@ Testimonials are used word for word from the current site and are not listed her
 |---|---|---|
 | Meet Billy | "I'm a Hampton Roads native and a military and first-responder veteran." | Accurate as written? Any branch or department you'd like named? |
 | Meet Billy | "I run my business the way I served: show up, tell the truth, get the job done." | Sounds like you? |
-| Meet Billy | "I negotiate like it's my own money" | Comfortable with this line? |
-| Trust strip | "20+ yrs of local know-how" · "4.9 average client rating" · "$4.4M in homes closed" | $4.4M is from Homes.com (prior 5 years); it replaces the old site's "$2.4M+". **Homes.com lists 3 years of experience** — is "20+ years" about living here rather than selling? Where is the 4.9 rating from? |
-| Hero | "…someone in your corner from first call to closing." | — |
-| CTA | "Book a quick call… No pressure — just straight answers." | Is there a booking link (Calendly, etc.) you'd like the button to open? |
-| Services | "First-time buyers welcome" badge | — |
+| Meet Billy | "…get the job done — first home or fifth." | — |
+| For buyers | "I negotiate like it's my own money, from the first offer to the closing table." | Comfortable with this line? |
+| For buyers | "Straight talk about the house, the street, and the price — the same thing I'd tell my own family." | Sounds like you? |
+| For sellers | "Priced right" · "Launched well" · "Negotiated hard" cards (pricing from recent street sales, a polished listing and showing plan, staying in your corner through inspections and appraisals) | Matches how you work with sellers? |
+| Hero stats | "20+ Years local" · "4.9★ Client rating" · "$4.4M In homes closed" | $4.4M is from Homes.com (prior 5 years); it replaces the old site's "$2.4M+". **Homes.com lists 3 years of experience** — is "20+ years" about living here rather than selling? Where is the 4.9 rating from? |
+| Hero | "Hi, I'm Billy — your Hampton Roads REALTOR®" | — |
+| Let's talk | "Ready when you are. Let's [Book a call] talk it through. No pressure, no obligation." | Is there a booking link (Calendly, etc.) you'd like the button to open? |
+| Photos | The two new front-yard photos (hero and "For buyers") | Is it OK to show this home? If it's a client's or a neighbor's house, we may want their OK. |
 
 ## FAQs (answers are new — the live site only answered one)
 

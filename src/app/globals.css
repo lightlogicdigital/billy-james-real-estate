@@ -4,6 +4,8 @@
  * Design tokens exported from the Paper file "Billy James Real Estate"
  * (Design System → Foundations). Mood: "tidewater porch".
  * Type rule: headings at 500, nothing heavier than 600; emphasize with color.
+ * Homepage (2026 redesign): lighter display type at 400 with one italic word,
+ * mist panels, ink pills, and an amber dot on every section kicker.
  */
 @theme {
   --color-background: #ffffff;
@@ -16,6 +18,9 @@
   --color-primary-hover: #163b6b;
   --color-accent: #f5b65d; /* porch light — fills only, never text on white */
   --color-accent-soft: #fcebcf;
+  --color-mist: #f2f4f7; /* homepage panels and cards */
+  --color-hairline: #e3e7ec;
+  --color-quiet: #8892a0; /* second tone of two-tone statements (3:1 at large sizes) */
 
   /* Display scale (desktop sizes; pages step down with responsive prefixes). */
   --text-hero: 4.5rem; /* 72px */
@@ -80,11 +85,14 @@ html.motion [data-intro],
 html.motion [data-split],
 html.motion [data-reveal],
 html.motion [data-reveal-stagger] > *,
-html.motion [data-hero-rise],
-html.motion [data-sun] {
+html.motion [data-hero-rise] {
   visibility: hidden;
 }
-html.motion:not(.motion-ready) :is([data-intro], [data-split], [data-reveal], [data-reveal-stagger] > *, [data-hero-rise], [data-sun]) {
+/* Hero photo starts slightly zoomed and settles in (harmless if JS never runs). */
+html.motion [data-hero-media] {
+  transform: scale(1.06);
+}
+html.motion:not(.motion-ready) :is([data-intro], [data-split], [data-reveal], [data-reveal-stagger] > *, [data-hero-rise]) {
   animation: motion-fallback 0s linear 2.5s forwards;
 }
 @keyframes motion-fallback {

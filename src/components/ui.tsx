@@ -37,6 +37,39 @@ export function Eyebrow({
   );
 }
 
+/** Homepage section label: small caps with an amber dot (2026 redesign). */
+export function Kicker({
+  children,
+  as: Tag = "p",
+  tone = "ink",
+  intro = false,
+  className,
+  id,
+}: {
+  children: ReactNode;
+  as?: "p" | "h2";
+  tone?: "ink" | "light";
+  /** Fade in on page load (see Motion.tsx). */
+  intro?: boolean;
+  className?: string;
+  id?: string;
+}) {
+  return (
+    <Tag
+      id={id}
+      data-intro={intro || undefined}
+      className={cn(
+        "flex items-center gap-2.5 text-xs font-medium uppercase tracking-eyebrow sm:text-[13px]",
+        tone === "light" ? "text-white" : "text-foreground",
+        className,
+      )}
+    >
+      <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-accent" />
+      {children}
+    </Tag>
+  );
+}
+
 type HeadingParts = { lead: string; accent?: string; muted?: string; tail?: string };
 
 /**
@@ -89,17 +122,27 @@ const buttonVariants = {
   accent: "bg-accent text-foreground hover:bg-[#efa743]",
   outline: "border border-foreground text-foreground hover:bg-foreground hover:text-white",
   "outline-light": "border border-white/70 bg-white/10 text-white hover:bg-white/20",
+  ink: "bg-foreground text-white hover:bg-[#0b1729]",
+  white: "bg-white text-foreground hover:bg-mist",
+} as const;
+
+const buttonSizes = {
+  md: "px-7 py-4 text-base font-semibold",
+  /** Lighter pill used on the homepage. */
+  pill: "px-[22px] py-3 text-[15px] font-normal",
 } as const;
 
 export function ButtonLink({
   variant = "primary",
+  size = "md",
   className,
   ...props
-}: ComponentProps<typeof Link> & { variant?: keyof typeof buttonVariants }) {
+}: ComponentProps<typeof Link> & { variant?: keyof typeof buttonVariants; size?: keyof typeof buttonSizes }) {
   return (
     <Link
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-full px-7 py-4 text-base font-semibold transition-colors",
+        "inline-flex items-center justify-center gap-2 rounded-full transition-colors",
+        buttonSizes[size],
         buttonVariants[variant],
         className,
       )}

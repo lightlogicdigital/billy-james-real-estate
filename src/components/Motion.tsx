@@ -20,9 +20,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, DrawSVGPlugin);
  *   data-count            Counts its first number up from zero when in view.
  *   data-draw             Line-art SVG draws its strokes in; the amber sun pops last.
  *   data-parallax-frame   Overflow-hidden frame whose [data-parallax-media] drifts on scroll.
- *   data-drift            Slow ambient sway (hero waves, gulls).
- *   data-sun              SVG whose circles bloom outward from the center, inner ring first.
- *   data-bob              Gentle bob on the water (hero sailboat).
+ *   data-hero-media       Hero photo settles from a slight zoom on load.
  *   data-polaroid         Snapshot tilts into place.
  *
  * Tone: restrained. Short distances (≤ 28px), soft eases, everything plays once.
@@ -82,25 +80,8 @@ export function MotionScope({ children }: { children: ReactNode }) {
           gsap.fromTo(rise, { autoAlpha: 0, y: 56 }, { autoAlpha: 1, y: 0, duration: 1.4, ease: "power3.out", stagger: 0.15, delay: 0.1 });
         }
 
-        all<SVGSVGElement>("[data-sun]").forEach((sun) => {
-          gsap.set(sun, { autoAlpha: 1 });
-          gsap.from(sun.querySelectorAll("circle"), {
-            scale: 0.55,
-            autoAlpha: 0,
-            transformOrigin: "50% 50%",
-            duration: 1.8,
-            ease: "expo.out",
-            stagger: { each: 0.16, from: "end" },
-            delay: 0.15,
-          });
-        });
-
-        all("[data-drift]").forEach((el, i) => {
-          gsap.to(el, { x: i % 2 ? -22 : 26, duration: 16 + i * 4, ease: "sine.inOut", yoyo: true, repeat: -1 });
-        });
-
-        all("[data-bob]").forEach((el) => {
-          gsap.to(el, { y: -5, rotation: -2.5, transformOrigin: "50% 100%", duration: 2.8, ease: "sine.inOut", yoyo: true, repeat: -1 });
+        all("[data-hero-media]").forEach((el) => {
+          gsap.fromTo(el, { scale: 1.06 }, { scale: 1, duration: 2.2, ease: "power2.out" });
         });
 
         /* ---------- Hero depth on scroll (homepage) ---------- */
@@ -108,9 +89,15 @@ export function MotionScope({ children }: { children: ReactNode }) {
         const hero = root.querySelector<HTMLElement>("[data-hero]");
         if (hero) {
           const st = { trigger: hero, start: "top top", end: "bottom top", scrub: 0.6 };
-          gsap.to(hero.querySelectorAll("[data-depth='near']"), { yPercent: -12, ease: "none", scrollTrigger: st });
-          gsap.to(hero.querySelectorAll("[data-depth='far']"), { yPercent: -3, ease: "none", scrollTrigger: st });
-          gsap.to(hero.querySelectorAll("[data-depth='copy']"), { yPercent: 10, autoAlpha: 0.2, ease: "none", scrollTrigger: st });
+          const layers: Array<[string, gsap.TweenVars]> = [
+            ["near", { yPercent: -12 }],
+            ["far", { yPercent: -3 }],
+            ["copy", { yPercent: 10, autoAlpha: 0.2 }],
+          ];
+          for (const [depth, vars] of layers) {
+            const targets = hero.querySelectorAll(`[data-depth='${depth}']`);
+            if (targets.length) gsap.to(targets, { ...vars, ease: "none", scrollTrigger: st });
+          }
         }
 
         /* ---------- On scroll ---------- */

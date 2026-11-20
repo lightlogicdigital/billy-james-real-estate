@@ -88,28 +88,3 @@ export function CtaBand({
     </section>
   );
 }
-
-/** Standard section header: eyebrow + headline (+ optional side copy). */
-export function SectionHeader({
-  eyebrow,
-  title,
-  aside,
-  id,
-}: {
-  eyebrow: string;
-  title: { lead: string; accent?: string; muted?: string; tail?: string };
-  aside?: React.ReactNode;
-  id?: string;
-}) {
-  return (
-    <div data-reveal-stagger className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
-      <div className="flex max-w-[780px] flex-col gap-5">
-        <Eyebrow>{eyebrow}</Eyebrow>
-        <div id={id}>
-          <Heading parts={title} />
-        </div>
-      </div>
-      {aside && <div className="text-lg leading-[1.65] text-muted lg:max-w-[420px] lg:pb-2">{aside}</div>}
-    </div>
-  );
-}

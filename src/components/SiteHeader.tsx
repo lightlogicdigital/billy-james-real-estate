@@ -10,8 +10,8 @@ import { site } from "@/content/site";
 import { CloseIcon, MenuIcon, PhoneIcon, cn } from "./ui";
 
 /**
- * On the homepage the header floats, transparent, over the light Neptune sky.
- * Everywhere else it sits on white with a hairline border.
+ * Floating pill nav. On the homepage it sits over the hero photo; elsewhere it
+ * rests at the top of the white page.
  */
 export function SiteHeader() {
   const pathname = usePathname();
@@ -52,13 +52,13 @@ export function SiteHeader() {
     };
   }, [open]);
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`));
 
   return (
     <header
       className={cn(
-        "z-30 w-full text-foreground",
-        overlay ? "absolute inset-x-0 top-0" : "relative border-b border-border bg-background",
+        "z-30 w-full px-3 text-foreground sm:px-6",
+        overlay ? "absolute inset-x-0 top-0 pt-[18px] sm:pt-[26px]" : "relative pb-2 pt-3 sm:pt-4",
       )}
     >
       <a
@@ -67,26 +67,22 @@ export function SiteHeader() {
       >
         Skip to content
       </a>
-      <div className="mx-auto flex max-w-content items-center justify-between gap-6 px-5 py-4 md:px-10 lg:px-16 lg:py-6">
+      <div className="mx-auto flex max-w-[1120px] items-center justify-between gap-4 rounded-full bg-mist/95 py-1.5 pl-5 pr-1.5 backdrop-blur-sm">
         <Link href="/" aria-label={`${site.name} — home`} className="shrink-0">
-          <Image
-            src="/images/brand/logo-dark.png"
-            alt={site.name}
-            width={1144}
-            height={263}
-            loading="eager"
-            className="h-7 w-auto lg:h-[34px]"
-          />
+          <Image src="/images/brand/logo-dark.png" alt={site.name} width={1144} height={263} loading="eager" className="h-6 w-auto lg:h-7" />
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">
-          <ul className="flex items-center gap-9">
-            {site.nav.map((item) => (
+          <ul className="flex items-center gap-1">
+            {[{ label: "Home", href: "/" }, ...site.nav].map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={cn("text-[15px] font-medium transition-colors hover:text-primary", isActive(item.href) && "text-primary")}
+                  className={cn(
+                    "inline-flex rounded-full px-4 py-2 text-sm transition-colors hover:bg-white/80",
+                    isActive(item.href) && "bg-white",
+                  )}
                 >
                   {item.label}
                 </Link>
@@ -95,17 +91,11 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <div className="hidden items-center gap-5 lg:flex">
-          <a
-            href={site.phoneHref}
-            className="text-[15px] font-medium text-primary hover:text-primary-hover"
-          >
+        <div className="hidden items-center gap-4 lg:flex">
+          <a href={site.phoneHref} className="hidden text-sm hover:text-primary xl:inline">
             {site.phone}
           </a>
-          <Link
-            href={site.bookingUrl}
-            className="rounded-full bg-accent px-5 py-3 text-[15px] font-semibold text-foreground transition-colors hover:bg-[#efa743]"
-          >
+          <Link href={site.bookingUrl} className="rounded-full bg-foreground px-5 py-2.5 text-sm text-white transition-colors hover:bg-[#0b1729]">
             Book a Call
           </Link>
         </div>
@@ -116,10 +106,7 @@ export function SiteHeader() {
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => setOpen(true)}
-          className={cn(
-            "flex size-11 items-center justify-center rounded-full lg:hidden",
-            overlay ? "bg-white/70" : "bg-surface",
-          )}
+          className="flex size-10 items-center justify-center rounded-full bg-white lg:hidden"
         >
           <MenuIcon className="size-5" />
           <span className="sr-only">Open menu</span>

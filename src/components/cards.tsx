@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatPrice, roleLabel, roleTag, type Listing } from "@/content/listings";
 import type { Neighborhood } from "@/content/neighborhoods";
-import type { Testimonial } from "@/content/testimonials";
 import { CityArt } from "./CityArt";
 import { HomeArt } from "./HomeArt";
 import { ArrowIcon, cn } from "./ui";
@@ -80,90 +79,5 @@ export function NeighborhoodCard({ neighborhood }: { neighborhood: Neighborhood 
         </span>
       </div>
     </Link>
-  );
-}
-
-/** Compact row version used on small screens. */
-export function NeighborhoodRow({ neighborhood }: { neighborhood: Neighborhood }) {
-  return (
-    <Link href={`/neighborhoods/${neighborhood.slug}`} className="flex items-center gap-3.5 border-b border-border py-4">
-      <span className="flex size-13 shrink-0 items-center justify-center rounded-xl bg-surface">
-        <CityArt slug={neighborhood.slug} className="h-8 w-12" draw={false} />
-      </span>
-      <span className="flex flex-1 flex-col">
-        <span className="text-lg font-semibold">{neighborhood.city}</span>
-        <span className="text-sm text-muted">{neighborhood.nickname}</span>
-      </span>
-      <ArrowIcon className="size-5 shrink-0" />
-    </Link>
-  );
-}
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .map((p) => p[0])
-    .join("")
-    .replace(/[^A-Z]/gi, "")
-    .slice(0, 2)
-    .toUpperCase();
-}
-
-/**
- * Quote card. `excerpt` must be a verbatim slice of the original testimonial;
- * `highlight` (also verbatim) is colored inside it.
- */
-export function TestimonialCard({
-  testimonial,
-  excerpt,
-  highlight,
-  featured = false,
-}: {
-  testimonial: Testimonial;
-  excerpt: string;
-  highlight?: string;
-  featured?: boolean;
-}) {
-  const [before, after] = highlight ? excerpt.split(highlight) : [excerpt, undefined];
-  return (
-    <figure
-      className={cn(
-        "flex h-full flex-col justify-between gap-7 rounded-lg",
-        featured ? "bg-primary p-7 text-white md:p-11" : "bg-white p-7 md:p-9",
-      )}
-    >
-      {featured && (
-        <span aria-hidden className="text-[64px] font-medium leading-[40px] text-accent">
-          “
-        </span>
-      )}
-      <blockquote
-        className={cn(
-          featured ? "text-xl leading-[1.5] md:text-[28px] md:leading-[40px]" : "text-lg leading-[1.55] md:text-xl",
-          "tracking-[-0.01em]",
-        )}
-      >
-        {!featured && "“"}
-        {before}
-        {highlight && <span className={featured ? "text-accent" : "text-primary"}>{highlight}</span>}
-        {after}
-        {!featured && "”"}
-      </blockquote>
-      <figcaption className="flex items-center gap-3.5">
-        <span
-          aria-hidden
-          className={cn(
-            "flex size-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-foreground",
-            featured ? "bg-accent" : "bg-accent-soft",
-          )}
-        >
-          {initials(testimonial.name)}
-        </span>
-        <span className="flex flex-col">
-          <span className="font-semibold">{testimonial.name}</span>
-          <span className={cn("text-sm", featured ? "text-white/80" : "text-muted")}>{testimonial.context} with Billy</span>
-        </span>
-      </figcaption>
-    </figure>
   );
 }
