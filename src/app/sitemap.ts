@@ -1,4 +1,7 @@
 import type { MetadataRoute } from "next";
+
+// Static export: generate this file once at build time.
+export const dynamic = "force-static";
 import { listings } from "@/content/listings";
 import { neighborhoods } from "@/content/neighborhoods";
 import { site } from "@/content/site";

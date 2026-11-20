@@ -10,17 +10,14 @@ import { ButtonLink, Container } from "@/components/ui";
 import { HOMES_PROFILE_URL, formatPrice, formatSoldDate, getListing, listings, roleLabel, roleTag } from "@/content/listings";
 import { site } from "@/content/site";
 
-// Every real slug is prerendered below, so navigations to them are already static.
-// We read `params` at the top level (instead of inside <Suspense>) so unknown slugs
-// return a true 404 status; that opts this segment out of instant-nav validation.
-export const instant = false;
+// Static export: only the listed sales are built; anything else is the 404 page.
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return listings.map((l) => ({ slug: l.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/listings/[slug]">): Promise<Metadata> {
-  "use cache";
   const { slug } = await params;
   const listing = getListing(slug);
   if (!listing) return { title: "Listing not found" };

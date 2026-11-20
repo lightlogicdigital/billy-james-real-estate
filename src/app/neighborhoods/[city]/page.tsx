@@ -9,16 +9,14 @@ import { ButtonLink, Container } from "@/components/ui";
 import { getNeighborhood, neighborhoods } from "@/content/neighborhoods";
 import { site } from "@/content/site";
 
-// All four cities are prerendered; reading `params` at the top level keeps unknown
-// cities a true 404, which opts this segment out of instant-nav validation.
-export const instant = false;
+// Static export: only the four cities are built; anything else is the 404 page.
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return neighborhoods.map((n) => ({ city: n.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/neighborhoods/[city]">): Promise<Metadata> {
-  "use cache";
   const { city } = await params;
   const n = getNeighborhood(city);
   if (!n) return { title: "Neighborhood not found" };

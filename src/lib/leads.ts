@@ -1,6 +1,14 @@
-"use server";
-
 import { z } from "zod";
+import { site } from "@/content/site";
+
+/*
+ * Lead forms for a static site (GitHub Pages has no server): the browser validates
+ * the form, then POSTs it as JSON to a form service such as Formspree, set at build
+ * time in NEXT_PUBLIC_FORM_ENDPOINT (e.g. https://formspree.io/f/abcdwxyz).
+ *
+ * Without an endpoint: in development the lead is logged and the visitor sees a
+ * success message; in a production build the visitor is asked to call or text.
+ */
 
 export type FormState = {
   status: "idle" | "success" | "error";
@@ -42,42 +50,36 @@ const homeValueSchema = z.object({
   phone: optionalPhone,
 });
 
+const interestLabels = { buying: "Buying", selling: "Selling", both: "Buying and selling", question: "Just a question" };
+const timelineLabels = { "0-3": "0–3 months", "3-12": "3–12 months", curious: "Just curious" };
+
 function read(formData: FormData, keys: string[]) {
   return Object.fromEntries(keys.map((k) => [k, String(formData.get(k) ?? "")]));
 }
 
-/**
- * Sends the lead by email through Resend's REST API when RESEND_API_KEY and
- * LEAD_TO_EMAIL are set. Without them (local dev, previews) the lead is logged
- * and the visitor still sees a success message.
- */
-async function deliverLead(subject: string, fields: Record<string, string>, replyTo?: string) {
-  const text = Object.entries(fields)
-    .map(([k, v]) => `${k}: ${v || "—"}`)
-    .join("\n");
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.LEAD_TO_EMAIL;
-  if (!apiKey || !to) {
-    console.info(`[lead] ${subject}\n${text}`);
-    return true;
-  }
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from: process.env.LEAD_FROM_EMAIL ?? "Billy James Website <onboarding@resend.dev>",
-      to: [to],
-      reply_to: replyTo || undefined,
-      subject,
-      text,
-    }),
-  });
-  if (!res.ok) console.error("[lead] Resend error", res.status, await res.text());
-  return res.ok;
-}
+const sendFailed = `Something went wrong sending that. Please call or text ${site.phone} instead.`;
 
-const interestLabels = { buying: "Buying", selling: "Selling", both: "Buying and selling", question: "Just a question" };
-const timelineLabels = { "0-3": "0–3 months", "3-12": "3–12 months", curious: "Just curious" };
+/** POSTs a lead to the form service. Formspree reads `_subject` and `_replyto`. */
+async function deliverLead(subject: string, fields: Record<string, string>, replyTo?: string): Promise<true | string> {
+  const endpoint = process.env.NEXT_PUBLIC_FORM_ENDPOINT;
+  if (!endpoint) {
+    if (process.env.NODE_ENV !== "production") {
+      console.info(`[lead] ${subject}`, fields);
+      return true;
+    }
+    return `The online form isn't connected yet. Please call or text ${site.phone} — I'd love to hear from you.`;
+  }
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ _subject: subject, _replyto: replyTo || undefined, ...fields }),
+    });
+    return res.ok ? true : sendFailed;
+  } catch {
+    return sendFailed;
+  }
+}
 
 export async function submitContact(_prev: FormState, formData: FormData): Promise<FormState> {
   // Honeypot: real people never see this field.
@@ -86,22 +88,15 @@ export async function submitContact(_prev: FormState, formData: FormData): Promi
   const values = read(formData, ["interest", "name", "phone", "email", "message"]);
   const parsed = contactSchema.safeParse(values);
   if (!parsed.success) {
-    return {
-      status: "error",
-      message: "A couple of things need a look.",
-      errors: parsed.error.flatten().fieldErrors,
-      values,
-    };
+    return { status: "error", message: "A couple of things need a look.", errors: parsed.error.flatten().fieldErrors, values };
   }
   const d = parsed.data;
-  const ok = await deliverLead(
+  const sent = await deliverLead(
     `New website message — ${interestLabels[d.interest]} — ${d.name}`,
     { Interest: interestLabels[d.interest], Name: d.name, Phone: d.phone, Email: d.email, Message: d.message },
     d.email,
   );
-  if (!ok) {
-    return { status: "error", message: "Something went wrong sending that. Please call or text instead.", values };
-  }
+  if (sent !== true) return { status: "error", message: sent, values };
   return { status: "success", message: `Thanks, ${d.name.split(" ")[0]}! I'll be in touch soon.` };
 }
 
@@ -111,21 +106,14 @@ export async function submitHomeValue(_prev: FormState, formData: FormData): Pro
   const values = read(formData, ["address", "timeline", "name", "email", "phone"]);
   const parsed = homeValueSchema.safeParse(values);
   if (!parsed.success) {
-    return {
-      status: "error",
-      message: "A couple of things need a look.",
-      errors: parsed.error.flatten().fieldErrors,
-      values,
-    };
+    return { status: "error", message: "A couple of things need a look.", errors: parsed.error.flatten().fieldErrors, values };
   }
   const d = parsed.data;
-  const ok = await deliverLead(
+  const sent = await deliverLead(
     `Home value request — ${d.address}`,
     { Address: d.address, Timeline: timelineLabels[d.timeline], Name: d.name, Email: d.email, Phone: d.phone },
     d.email,
   );
-  if (!ok) {
-    return { status: "error", message: "Something went wrong sending that. Please call or text instead.", values };
-  }
+  if (sent !== true) return { status: "error", message: sent, values };
   return { status: "success", message: `Thanks, ${d.name.split(" ")[0]}! I'll take a look at ${d.address} and reach out.` };
 }

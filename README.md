@@ -13,7 +13,7 @@ Design tokens in `src/app/globals.css` were exported from that file.
 ```bash
 npm install
 npm run dev        # http://localhost:3000
-npm run build      # production build (all pages prerender as static)
+npm run build      # static export to ./out (every page is plain HTML)
 npx eslint .       # lint (next build no longer lints)
 ```
 
@@ -48,6 +48,20 @@ visitors who prefer reduced motion.
 
 ## Lead forms
 
-The Contact and Home Value forms post to server actions in `src/app/actions.ts` (Zod validation + honeypot).
-Copy `.env.example` to `.env.local` and set `RESEND_API_KEY` and `LEAD_TO_EMAIL` to email leads via Resend.
-Without those variables, leads are logged to the server console and visitors still see a success message.
+The Contact and Home Value forms validate in the browser (Zod + honeypot, `src/lib/leads.ts`) and POST the
+lead as JSON to a form service such as [Formspree](https://formspree.io), which emails it to Billy.
+Set the form's endpoint as `NEXT_PUBLIC_FORM_ENDPOINT` (see `.env.example`) locally, and as the repo
+variable `FORM_ENDPOINT` for the live site. Until it's set, the live forms ask visitors to call or text.
+
+## Deploy (GitHub Pages)
+
+The site is a static export (`output: "export"` in `next.config.ts`), published by
+`.github/workflows/deploy.yml` on every push to `main`:
+
+1. Repo **Settings → Pages → Source: GitHub Actions** (one time).
+2. Push to `main`; the workflow builds `./out` and deploys it.
+
+While the site lives at `https://<user>.github.io/<repo>/`, the workflow sets `PAGES_BASE_PATH=/<repo>`.
+With a custom domain (Settings → Pages → Custom domain), it's empty automatically.
+Static hosting means no server: images are served as-is (`src/lib/image-loader.ts`), and the old
+`/listings/1308-megette-dr` URL forwards with a meta refresh (`src/app/listings/1308-megette-dr`).

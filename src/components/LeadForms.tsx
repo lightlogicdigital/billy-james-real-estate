@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useActionState, useContext, useId } from "react";
-import { submitContact, submitHomeValue, type FormState } from "@/app/actions";
+import { submitContact, submitHomeValue, type FormState } from "@/lib/leads";
 import { site } from "@/content/site";
 import { CheckIcon, cn } from "./ui";
 
