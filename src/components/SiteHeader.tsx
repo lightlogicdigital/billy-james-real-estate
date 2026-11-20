@@ -10,7 +10,7 @@ import { site } from "@/content/site";
 import { CloseIcon, MenuIcon, PhoneIcon, cn } from "./ui";
 
 /**
- * On the homepage the header floats over the sky hero (white text).
+ * On the homepage the header floats, transparent, over the light Neptune sky.
  * Everywhere else it sits on white with a hairline border.
  */
 export function SiteHeader() {
@@ -57,8 +57,8 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        "z-30 w-full",
-        overlay ? "absolute inset-x-0 top-0 text-white" : "relative border-b border-border bg-background text-foreground",
+        "z-30 w-full text-foreground",
+        overlay ? "absolute inset-x-0 top-0" : "relative border-b border-border bg-background",
       )}
     >
       <a
@@ -70,7 +70,7 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-content items-center justify-between gap-6 px-5 py-4 md:px-10 lg:px-16 lg:py-6">
         <Link href="/" aria-label={`${site.name} — home`} className="shrink-0">
           <Image
-            src={overlay ? "/images/brand/logo-white.png" : "/images/brand/logo-dark.png"}
+            src="/images/brand/logo-dark.png"
             alt={site.name}
             width={1144}
             height={263}
@@ -86,11 +86,7 @@ export function SiteHeader() {
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={cn(
-                    "text-[15px] font-medium transition-colors",
-                    overlay ? "hover:text-accent" : "hover:text-primary",
-                    !overlay && isActive(item.href) && "text-primary",
-                  )}
+                  className={cn("text-[15px] font-medium transition-colors hover:text-primary", isActive(item.href) && "text-primary")}
                 >
                   {item.label}
                 </Link>
@@ -102,7 +98,7 @@ export function SiteHeader() {
         <div className="hidden items-center gap-5 lg:flex">
           <a
             href={site.phoneHref}
-            className={cn("text-[15px] font-medium", overlay ? "text-white hover:text-accent" : "text-primary hover:text-primary-hover")}
+            className="text-[15px] font-medium text-primary hover:text-primary-hover"
           >
             {site.phone}
           </a>
@@ -122,7 +118,7 @@ export function SiteHeader() {
           onClick={() => setOpen(true)}
           className={cn(
             "flex size-11 items-center justify-center rounded-full lg:hidden",
-            overlay ? "bg-white/15 text-white" : "bg-surface text-foreground",
+            overlay ? "bg-white/70" : "bg-surface",
           )}
         >
           <MenuIcon className="size-5" />

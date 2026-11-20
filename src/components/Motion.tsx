@@ -20,7 +20,9 @@ gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, DrawSVGPlugin);
  *   data-count            Counts its first number up from zero when in view.
  *   data-draw             Line-art SVG draws its strokes in; the amber sun pops last.
  *   data-parallax-frame   Overflow-hidden frame whose [data-parallax-media] drifts on scroll.
- *   data-drift            Slow ambient sway (hero clouds).
+ *   data-drift            Slow ambient sway (hero waves, gulls).
+ *   data-sun              SVG whose circles bloom outward from the center, inner ring first.
+ *   data-bob              Gentle bob on the water (hero sailboat).
  *   data-polaroid         Snapshot tilts into place.
  *
  * Tone: restrained. Short distances (≤ 28px), soft eases, everything plays once.
@@ -59,6 +61,8 @@ export function MotionScope({ children }: { children: ReactNode }) {
             autoSplit: true,
             onSplit(self) {
               gsap.set(el, { autoAlpha: 1 });
+              // Line masks clip at the line box; give descenders (g, y) room without moving layout.
+              gsap.set(self.masks, { paddingBottom: "0.14em", marginBottom: "-0.14em" });
               return gsap.from(self.words, { yPercent: 110, duration: 1.05, ease: "power4.out", stagger: 0.035 });
             },
           });
@@ -78,8 +82,25 @@ export function MotionScope({ children }: { children: ReactNode }) {
           gsap.fromTo(rise, { autoAlpha: 0, y: 56 }, { autoAlpha: 1, y: 0, duration: 1.4, ease: "power3.out", stagger: 0.15, delay: 0.1 });
         }
 
+        all<SVGSVGElement>("[data-sun]").forEach((sun) => {
+          gsap.set(sun, { autoAlpha: 1 });
+          gsap.from(sun.querySelectorAll("circle"), {
+            scale: 0.55,
+            autoAlpha: 0,
+            transformOrigin: "50% 50%",
+            duration: 1.8,
+            ease: "expo.out",
+            stagger: { each: 0.16, from: "end" },
+            delay: 0.15,
+          });
+        });
+
         all("[data-drift]").forEach((el, i) => {
           gsap.to(el, { x: i % 2 ? -22 : 26, duration: 16 + i * 4, ease: "sine.inOut", yoyo: true, repeat: -1 });
+        });
+
+        all("[data-bob]").forEach((el) => {
+          gsap.to(el, { y: -5, rotation: -2.5, transformOrigin: "50% 100%", duration: 2.8, ease: "sine.inOut", yoyo: true, repeat: -1 });
         });
 
         /* ---------- Hero depth on scroll (homepage) ---------- */
@@ -94,7 +115,14 @@ export function MotionScope({ children }: { children: ReactNode }) {
 
         /* ---------- On scroll ---------- */
 
+        // Elements with no box at this breakpoint (e.g. `hidden sm:grid`) get no trigger. A
+        // zero-size `once` trigger fires and removes itself while later triggers are being
+        // measured, which makes ScrollTrigger read past the end of its list and throw
+        // (seen when a page loads already scrolled down). Show those elements as they are.
+        const laidOut = (el: Element) => el.getClientRects().length > 0;
+
         all("[data-reveal]").forEach((el) => {
+          if (!laidOut(el)) return void gsap.set(el, { autoAlpha: 1 });
           gsap.fromTo(
             el,
             { autoAlpha: 0, y: REVEAL.y },
@@ -110,6 +138,7 @@ export function MotionScope({ children }: { children: ReactNode }) {
         });
 
         all("[data-reveal-stagger]").forEach((group) => {
+          if (!laidOut(group)) return void gsap.set(group.children, { autoAlpha: 1 });
           gsap.fromTo(
             group.children,
             { autoAlpha: 0, y: REVEAL.y },
@@ -126,6 +155,7 @@ export function MotionScope({ children }: { children: ReactNode }) {
         });
 
         all("[data-polaroid]").forEach((el) => {
+          if (!laidOut(el)) return;
           gsap.from(el, {
             rotation: 9,
             y: 40,
@@ -137,6 +167,7 @@ export function MotionScope({ children }: { children: ReactNode }) {
         });
 
         all("[data-count]").forEach((el) => {
+          if (!laidOut(el)) return;
           const node = Array.from(el.childNodes).find((n) => n.nodeType === Node.TEXT_NODE && /\d/.test(n.nodeValue ?? ""));
           const match = node?.nodeValue?.match(/^(\D*)(\d+(?:\.\d+)?)([\s\S]*)$/);
           if (!node || !match) return;
@@ -157,12 +188,17 @@ export function MotionScope({ children }: { children: ReactNode }) {
         });
 
         all<SVGSVGElement>("[data-draw]").forEach((svg) => {
-          const tl = gsap.timeline({ scrollTrigger: { trigger: svg, start: "top 90%", once: true } });
+          if (!laidOut(svg)) return;
+          // A plain trigger plays a paused timeline. `timeline({ scrollTrigger })` waits a tick
+          // before measuring, and an unmeasured trigger hits the same failure described above.
+          const tl = gsap.timeline({ paused: true });
           tl.from(svg.querySelectorAll("path"), { drawSVG: "0%", duration: 1.4, ease: "power2.inOut", stagger: 0.05 });
           tl.from(svg.querySelectorAll("circle"), { scale: 0, transformOrigin: "50% 50%", duration: 0.7, ease: "back.out(1.8)" }, "-=0.6");
+          ScrollTrigger.create({ trigger: svg, start: "top 90%", once: true, onEnter: () => tl.play() });
         });
 
         all("[data-parallax-frame]").forEach((frame) => {
+          if (!laidOut(frame)) return;
           const media = frame.querySelector("[data-parallax-media]");
           if (!media) return;
           gsap.fromTo(
@@ -183,13 +219,17 @@ export function MotionScope({ children }: { children: ReactNode }) {
         root.addEventListener("toggle", onToggle, true);
 
         // Images and fonts can shift layout after first paint; re-measure triggers.
+        // Also re-measure once now: the site footer (in the layout) keeps its own trigger,
+        // which must be recomputed for each page's height after client-side navigation.
         const refresh = () => ScrollTrigger.refresh();
         window.addEventListener("load", refresh);
         document.fonts?.ready.then(refresh);
+        const raf = requestAnimationFrame(refresh);
 
         return () => {
           root.removeEventListener("toggle", onToggle, true);
           window.removeEventListener("load", refresh);
+          cancelAnimationFrame(raf);
           restoreText.forEach((fn) => fn());
         };
       });

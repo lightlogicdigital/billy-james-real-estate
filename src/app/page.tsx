@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { ListingCard, NeighborhoodCard, NeighborhoodRow, TestimonialCard } from "@/components/cards";
 import { MotionScope } from "@/components/Motion";
+import { NeptuneHero } from "@/components/NeptuneHero";
 import { CtaBand, FaqSection, SectionHeader } from "@/components/sections";
 import { ServicesList } from "@/components/ServicesList";
-import { ButtonLink, Container, Eyebrow, Heading, TextLink } from "@/components/ui";
+import { Container, Eyebrow, Heading, TextLink } from "@/components/ui";
 import { about } from "@/content/about";
 import { home } from "@/content/home";
 import { listings } from "@/content/listings";
@@ -16,68 +17,7 @@ export default function HomePage() {
   const [jacob, david, bob] = testimonials;
   return (
     <MotionScope>
-      {/* ---------- Hero: sky, clouds, King Neptune, cut-out homes ---------- */}
-      <section data-hero className="relative isolate h-[800px] overflow-hidden bg-[linear-gradient(180deg,#2B69AE_0%,#4E8BCB_42%,#9CC4EA_78%,#CFE3F5_100%)] md:h-[900px] lg:h-[940px]">
-        <Image
-          src="/images/local/cloud.png"
-          alt=""
-          width={1600}
-          height={1066}
-          data-drift
-          data-depth="far"
-          className="absolute -z-10 hidden w-[280px] opacity-90 md:block md:left-[58%] md:top-[220px] lg:left-[64%] lg:top-[250px]"
-        />
-        <Image
-          src="/images/local/cloud.png"
-          alt=""
-          width={1600}
-          height={1066}
-          data-drift
-          className="absolute -z-10 hidden w-[230px] opacity-70 lg:right-[2%] lg:top-[105px] lg:block"
-        />
-        <Image
-          src="/images/local/king-neptune.png"
-          alt="The King Neptune statue at the Virginia Beach Oceanfront"
-          width={1080}
-          height={1350}
-          loading="eager"
-          sizes="(min-width: 1024px) 532px, (min-width: 768px) 380px, 230px"
-          data-hero-rise
-          data-depth="near"
-          className="absolute left-[47%] top-[548px] z-[3] w-[230px] md:left-[58%] md:top-[400px] md:w-[380px] lg:left-[68%] lg:top-[275px] lg:w-[532px]"
-        />
-        <Image
-          src="/images/local/hero-homes.png"
-          alt="A row of brick and siding homes in a Hampton Roads neighborhood"
-          width={1350}
-          height={956}
-          preload
-          sizes="(min-width: 1600px) 1600px, max(100vw, 700px)"
-          data-hero-rise
-          data-depth="far"
-          className="absolute left-1/2 top-[600px] z-[2] w-[max(100%,700px)] max-w-[1600px] -translate-x-1/2 md:top-[470px] lg:top-[280px]"
-        />
-        <div data-depth="copy" className="relative z-[4]">
-        <Container className="flex flex-col gap-5 pt-[124px] md:gap-7 md:pt-40 lg:pt-[172px]">
-          <div data-intro>
-          <Eyebrow tone="light" className="text-xs md:text-sm">
-            <span className="sm:hidden">{home.hero.eyebrow.replace("Virginia Beach", "VA Beach")}</span>
-            <span className="hidden sm:inline">{home.hero.eyebrow}</span>
-          </Eyebrow>
-          </div>
-          <Heading as="h1" size="hero" split parts={{ lead: home.hero.title.lead, accent: home.hero.title.accent }} accentColor="accent" className="max-w-[920px] text-white" />
-          <p data-intro className="max-w-[580px] text-[17px] leading-[1.55] text-white md:text-xl">{home.hero.lead}</p>
-          <div data-intro className="flex flex-col gap-2.5 pt-1.5 sm:flex-row sm:gap-3.5">
-            <ButtonLink href={home.hero.primaryCta.href} variant="accent">
-              {home.hero.primaryCta.label}
-            </ButtonLink>
-            <ButtonLink href={home.hero.secondaryCta.href} variant="outline-light" className="font-medium">
-              {home.hero.secondaryCta.label}
-            </ButtonLink>
-          </div>
-        </Container>
-        </div>
-      </section>
+      <NeptuneHero />
 
       {/* ---------- Trust strip ---------- */}
       <section aria-label="Track record" className="border-b border-border">

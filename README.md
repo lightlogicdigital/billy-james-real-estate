@@ -4,6 +4,7 @@ Marketing site for Billy James, Hampton Roads REALTOR® (Atlantic Connection Rea
 Next.js 16 (App Router, Cache Components) · React 19 · Tailwind CSS v4 · TypeScript.
 
 Designs live in the Paper file **"Billy James Real Estate"** (pages: Design System, Desktop, Mobile).
+The homepage hero (King Neptune poster) and the lighthouse footer are on the **"Hero Explorations · Round 2"** page.
 Design tokens in `src/app/globals.css` were exported from that file.
 
 ## Run it
@@ -37,9 +38,11 @@ To use a Calendly (or similar) link for every "Book a Call" button: set `booking
 ## Motion
 
 Animations use GSAP (ScrollTrigger, SplitText, DrawSVG) and are declared with data attributes —
-`data-split`, `data-intro`, `data-reveal`, `data-reveal-stagger`, `data-count`, `data-draw`, `data-parallax-frame` —
+`data-split`, `data-intro`, `data-reveal`, `data-reveal-stagger`, `data-count`, `data-draw`, `data-parallax-frame`,
+`data-sun`, `data-drift`, `data-bob` —
 documented at the top of `src/components/Motion.tsx`. Each page wraps its content in `<MotionScope>`
-(it must be inside the page so it hydrates with what it animates). Everything is skipped for
+(it must be inside the page so it hydrates with what it animates). The footer lives in the layout,
+so `FooterScene.tsx` animates its own lighthouse beam and stars. Everything is skipped for
 visitors who prefer reduced motion.
 
 ## Lead forms

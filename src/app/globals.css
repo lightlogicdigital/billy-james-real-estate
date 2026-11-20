@@ -80,10 +80,11 @@ html.motion [data-intro],
 html.motion [data-split],
 html.motion [data-reveal],
 html.motion [data-reveal-stagger] > *,
-html.motion [data-hero-rise] {
+html.motion [data-hero-rise],
+html.motion [data-sun] {
   visibility: hidden;
 }
-html.motion:not(.motion-ready) :is([data-intro], [data-split], [data-reveal], [data-reveal-stagger] > *, [data-hero-rise]) {
+html.motion:not(.motion-ready) :is([data-intro], [data-split], [data-reveal], [data-reveal-stagger] > *, [data-hero-rise], [data-sun]) {
   animation: motion-fallback 0s linear 2.5s forwards;
 }
 @keyframes motion-fallback {
