@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader, StickyCallBar } from "@/components/SiteHeader";
 import { JsonLd, agentJsonLd } from "@/components/JsonLd";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -37,7 +38,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // suppressHydrationWarning: the inline script below adds the `motion` class before React hydrates.
-    <html lang="en" className={`${jakarta.variable} antialiased`} suppressHydrationWarning>
+    // data-scroll-behavior: Next switches off the smooth scrolling in globals.css during page changes.
+    <html lang="en" data-scroll-behavior="smooth" className={`${jakarta.variable} antialiased`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -47,6 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="flex min-h-screen flex-col">
+        <ScrollToTop />
         <JsonLd data={agentJsonLd()} />
         <SiteHeader />
         <main id="main" className="flex-1">

@@ -24,7 +24,7 @@ export function SiteFooter() {
         <div className="relative isolate overflow-hidden bg-foreground">
           <FooterScene className="absolute bottom-0 right-0 -z-10 h-[260px] w-auto max-w-none sm:h-[340px] lg:h-[440px]" />
           <Wrap className="flex flex-col gap-5 pb-[240px] pt-12 sm:pb-[300px] lg:gap-[26px] lg:pb-36 lg:pt-[120px]">
-            <Image src="/images/brand/logo-white.png" alt={site.name} width={1144} height={263} className="h-7 w-auto self-start lg:h-9" />
+            <Image src="/images/brand/logo-white.png" alt={site.name} width={949} height={205} className="h-[22px] w-auto self-start lg:h-7" />
             <p className="font-display text-[28px] leading-[1.2] tracking-[-0.03em] text-balance sm:text-[36px] lg:text-[40px] xl:text-[48px] xl:leading-[56px]">
               Real estate help from a neighbor
               <br className="hidden lg:block" /> who knows <em className="italic text-accent">Hampton Roads.</em>
