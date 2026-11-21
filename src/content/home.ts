@@ -61,7 +61,7 @@ export const home = {
       },
     ],
     featuredSale: "1308-meggett-dr-chesapeake-va",
-    allSales: { label: "See every home I've sold", href: "/listings" },
+    allSales: { label: "See a few homes I've sold", href: "/listings" },
   },
   buyers: {
     kicker: "For buyers",
