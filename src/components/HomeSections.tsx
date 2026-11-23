@@ -334,13 +334,14 @@ export function ForBuyers() {
           </div>
         </div>
         <div data-reveal className="relative aspect-[560/680] w-full overflow-hidden rounded-[24px] bg-mist lg:w-[560px] lg:shrink-0">
-          {/* Zoomed in on Billy: the source is a full-length portrait. */}
+          {/* The source is a full-length portrait: frame it mid-thigh up, with headroom above
+              Billy and his hands fully in frame (shows ~16–86% of the photo's height). */}
           <Image
             src={buyers.image.src}
             alt={buyers.image.alt}
             fill
-            sizes="(min-width: 1024px) 840px, 150vw"
-            className="origin-[53%_28%] scale-150 object-cover"
+            sizes="(min-width: 1024px) 728px, 130vw"
+            className="origin-[65%_54%] scale-[1.3] object-cover"
           />
         </div>
       </Wrap>
