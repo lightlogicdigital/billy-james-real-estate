@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatPrice, roleTag, type Listing } from "@/content/listings";
+import { formatPrice, photoCredit, roleTag, type Listing } from "@/content/listings";
 import type { Neighborhood } from "@/content/neighborhoods";
 import { CityArt } from "./CityArt";
 import { HomeArt } from "./HomeArt";
@@ -60,7 +60,7 @@ export function ListingCard({ listing, index = 0, className }: { listing: Listin
           ))}
         </ul>
       )}
-      {listing.image?.credit && <p className="-mt-2 text-xs text-muted">Listing courtesy of {listing.image.credit}</p>}
+      {photoCredit(listing.image) && <p className="-mt-2 text-xs text-muted">{photoCredit(listing.image)}</p>}
     </Link>
   );
 }

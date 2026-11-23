@@ -36,6 +36,8 @@ export type Listing = {
     height: number;
     /** Listing brokerage, for photos from another agent's listing. */
     credit?: string;
+    /** Google Street View capture; keep Google's watermark in the image. */
+    streetView?: boolean;
   } | null;
 };
 
@@ -87,6 +89,50 @@ export const listings: Listing[] = [
       alt: "Single-story brick ranch home with an attached garage at 919 Johnstown Rd in Chesapeake, Virginia",
       width: 1024,
       height: 768,
+    },
+  },
+  // Rollingview Ct: sale price and month from public records on Homes.com (the day isn't
+  // published, so it's set to the 1st; only month and year are shown).
+  {
+    slug: "2468-rollingview-ct-virginia-beach-va",
+    street: "2468 Rollingview Ct",
+    city: "Virginia Beach",
+    state: "VA",
+    zip: "23456",
+    role: "seller",
+    soldPrice: 465000,
+    soldDate: "2024-10-01",
+    beds: 4,
+    baths: 3,
+    sqft: 2304,
+    description: null,
+    image: {
+      src: "/images/listings/2468-rollingview-ct.jpg",
+      alt: "Two-story white home with a covered front porch, a dormer, and a two-car garage at 2468 Rollingview Court in Virginia Beach, Virginia",
+      width: 1000,
+      height: 700,
+      streetView: true,
+    },
+  },
+  {
+    slug: "2472-rollingview-ct-virginia-beach-va",
+    street: "2472 Rollingview Ct",
+    city: "Virginia Beach",
+    state: "VA",
+    zip: "23456",
+    role: "seller",
+    soldPrice: 500000,
+    soldDate: "2024-05-01",
+    beds: 4,
+    baths: 3,
+    sqft: 2552,
+    description: null,
+    image: {
+      src: "/images/listings/2472-rollingview-ct.jpg",
+      alt: "Two-story brick colonial with an arched front entry, black shutters, and an attached garage at 2472 Rollingview Court in Virginia Beach, Virginia",
+      width: 1000,
+      height: 700,
+      streetView: true,
     },
   },
   {
@@ -174,6 +220,10 @@ export const getListing = (slug: string) => listings.find((l) => l.slug === slug
 
 export const formatPrice = (n: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+
+/** Caption under a photo that isn't Billy's own. */
+export const photoCredit = (image: Listing["image"]) =>
+  image?.streetView ? "Image: Google Street View" : image?.credit ? `Listing courtesy of ${image.credit}` : null;
 
 /** Short tag shown on the photo. */
 export const roleTag: Record<DealRole, string> = { seller: "Sold", buyer: "Bought", both: "Sold" };

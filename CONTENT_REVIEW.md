@@ -35,6 +35,8 @@ The Properties Sold page now uses the deals on Billy's Homes.com profile
 - **Missing details:** sale dates for 525 Queenswood Terrace, 925 Johnstown Rd, 4916 Apricot Way, and 1857 Palomino Trail. (Beds, baths and square feet are now filled in.)
 - **Photos:** the three buyer-side deals now use their listing photos with a "Listing courtesy of" credit (Howard Hanna Real Estate Services, BHHS RW Towne Realty, Corinth Realty LLC). Billy confirmed he has the rights to use them; please keep that permission on file.
 - **The other 4 closed sales** aren't listed by address on Homes.com. Send them over if you'd like them on the site.
+- **2468 and 2472 Rollingview Ct (Virginia Beach)** were added as homes Billy sold. Price and month come from public records on Homes.com: 2468 sold Oct 2024 for $465,000, 2472 sold May 2024 for $500,000. Those pages don't name the agents, so please confirm these are Billy's sales and that he was the listing agent (they're tagged "Sold").
+- **Rollingview photos are Google Street View captures** (credited "Image: Google Street View", watermark kept). Google's terms limit Street View use in promotional material, so swap in Billy's own or the MLS listing photos when he can.
 
 ## Still missing
 

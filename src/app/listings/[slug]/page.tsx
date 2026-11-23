@@ -7,7 +7,7 @@ import { HomeArt } from "@/components/HomeArt";
 import { JsonLd, listingJsonLd } from "@/components/JsonLd";
 import { MotionScope } from "@/components/Motion";
 import { ButtonLink, Container } from "@/components/ui";
-import { HOMES_PROFILE_URL, formatPrice, formatSoldDate, getListing, listings, roleTag } from "@/content/listings";
+import { HOMES_PROFILE_URL, formatPrice, formatSoldDate, getListing, listings, photoCredit, roleTag } from "@/content/listings";
 import { site } from "@/content/site";
 
 // Static export: only the listed sales are built; anything else is the 404 page.
@@ -97,7 +97,7 @@ export default async function ListingPage({ params }: PageProps<"/listings/[slug
               <HomeArt variant={index} label="Photo coming soon" />
             )}
           </div>
-          {listing.image?.credit && <p className="-mt-4 text-xs text-muted">Photo: listing courtesy of {listing.image.credit}</p>}
+          {photoCredit(listing.image) && <p className="-mt-4 text-xs text-muted">{photoCredit(listing.image)}</p>}
         </Container>
       </section>
 
