@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
+import { Logo } from "./Logo";
 import { CloseIcon, MenuIcon, PhoneIcon, cn } from "./ui";
 
 /**
@@ -68,9 +69,9 @@ export function SiteHeader() {
       >
         Skip to content
       </a>
-      <div className="mx-auto flex max-w-[1120px] items-center justify-between gap-4 rounded-full bg-mist/95 py-1.5 pl-5 pr-1.5 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-[1120px] items-center justify-between gap-4 rounded-full bg-mist/95 py-1.5 pl-2 pr-1.5 backdrop-blur-sm">
         <Link href="/" aria-label={`${site.name} — home`} className="shrink-0">
-          <Image src="/images/brand/logo-dark.png" alt={site.name} width={949} height={205} loading="eager" className="h-7 w-auto lg:h-8" />
+          <Logo badge={34} />
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">
@@ -134,7 +135,7 @@ export function SiteHeader() {
           className="fixed inset-0 z-50 flex flex-col bg-foreground px-5 pb-8 pt-4 text-white lg:hidden"
         >
           <div className="flex items-center justify-between">
-            <Image src="/images/brand/logo-white.png" alt={site.name} width={949} height={205} className="h-7 w-auto" />
+            <Logo badge={32} tone="light" />
             <button
               type="button"
               autoFocus
