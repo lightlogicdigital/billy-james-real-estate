@@ -124,6 +124,7 @@ const buttonVariants = {
   "outline-light": "border border-white/70 bg-white/10 text-white hover:bg-white/20",
   ink: "bg-foreground text-white hover:bg-[#0b1729]",
   white: "bg-white text-foreground hover:bg-mist",
+  mist: "bg-mist text-foreground hover:bg-hairline",
 } as const;
 
 const buttonSizes = {

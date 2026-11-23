@@ -19,14 +19,14 @@ import { ArrowIcon, ButtonLink, Kicker, cn } from "./ui";
  */
 
 /** 1120px content column (1200 max minus 40px gutters), matching the design. */
-function Wrap({ className, children }: { className?: string; children: ReactNode }) {
+export function Wrap({ className, children }: { className?: string; children: ReactNode }) {
   return <div className={cn("mx-auto w-full max-w-[1200px] px-5 md:px-10", className)}>{children}</div>;
 }
 
 const titleClass =
   "font-display text-[34px] font-normal leading-[1.15] tracking-[-0.03em] text-balance sm:text-[40px] lg:text-[48px] lg:leading-[56px]";
 
-function Title({ title, id, className }: { title: HomeTitle; id: string; className?: string }) {
+export function Title({ title, id, className }: { title: HomeTitle; id: string; className?: string }) {
   return (
     <h2 id={id} className={cn(titleClass, className)}>
       {title.lead} <em className="italic">{title.em}</em>
@@ -436,8 +436,10 @@ export function Reviews() {
 
 /* ---------- Let's talk: one sentence with the booking pill set inline ---------- */
 
-export function LetsTalk() {
+/** Closing sign-off. `title` swaps the first line (e.g. "Thinking about Norfolk?" on city pages). */
+export function LetsTalk({ title }: { title?: HomeTitle } = {}) {
   const { talk } = home;
+  const line1 = title ?? talk.line1;
   return (
     <section aria-labelledby="talk-title">
       <Wrap>
@@ -445,7 +447,7 @@ export function LetsTalk() {
           <Kicker>{talk.kicker}</Kicker>
           <div className="flex flex-col items-center gap-3 font-display text-[36px] leading-[1.15] tracking-[-0.03em] sm:gap-1.5 sm:text-[48px] lg:text-[64px] lg:leading-[76px]">
             <h2 id="talk-title" className="font-normal">
-              {talk.line1.lead} <em className="italic">{talk.line1.em}</em>
+              {line1.lead} <em className="italic">{line1.em}</em>
             </h2>
             <p className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
               <span>{talk.before}</span>
