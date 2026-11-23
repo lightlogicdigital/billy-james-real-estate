@@ -400,10 +400,11 @@ const reviewTones = [
   { card: "bg-foreground text-white", avatar: "bg-accent text-foreground", meta: "text-white/75" },
 ];
 
-export function Reviews() {
+/** `tight` drops the big top padding when the section follows another one directly (About page). */
+export function Reviews({ tight = false }: { tight?: boolean } = {}) {
   const { reviews } = home;
   return (
-    <section aria-labelledby="reviews-title" className="pb-24 pt-24 lg:pb-28 lg:pt-32">
+    <section aria-labelledby="reviews-title" className={tight ? "pb-10" : "pb-24 pt-24 lg:pb-28 lg:pt-32"}>
       <Wrap className="flex flex-col items-center gap-12 lg:gap-14">
         <CenteredHeader kicker={reviews.kicker} title={reviews.title} id="reviews-title" lead={reviews.lead} />
         <ul data-reveal-stagger className="grid w-full gap-4 md:grid-cols-3">
