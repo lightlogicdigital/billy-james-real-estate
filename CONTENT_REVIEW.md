@@ -25,6 +25,14 @@ Testimonials are used word for word from the current site and are not listed her
 - **Do you work with first-time buyers?** Says yes and lists what you walk them through.
 - **Which areas do you cover?** Lists the four cities and mentions helping military families on PCS orders. Accurate?
 
+## Home Value and Contact pages (redesigned)
+
+- **Home Value form:** "Takes about a minute. Free, no obligation." Is the home value always free?
+- **Home Value, "How it works":** "You'll hear from me personally — usually with a few quick questions before I come take a look." Does that match how Billy handles these requests?
+- **Home Value photo:** Billy in a driveway (`billy-front-yard.jpg`) sits beside the three steps. Same question as above: is it OK to show this house?
+- **Home Value quote:** the opening line of David C.'s review ("My family and I could not have sold my house without Billy's expertise.").
+- **Contact form:** new "Best way to reach you" choice (Call / Text / Email). It's included with each message; picking Call or Text makes the phone number required, and Email makes the email required.
+
 ## Sold homes (from Homes.com)
 
 The Properties Sold page now uses the deals on Billy's Homes.com profile

@@ -32,14 +32,21 @@ const optionalPhone = z
 const contactSchema = z
   .object({
     interest: z.enum(["buying", "selling", "both", "question"]).catch("question"),
+    /** Only the contact page asks; the homepage form leaves it blank. */
+    contactBy: z.enum(["call", "text", "email"]).optional().catch(undefined),
     name: z.string().trim().min(2, "Please tell me your name.").max(120),
     phone: optionalPhone,
     email: optionalEmail,
     message: z.string().trim().max(4000),
   })
-  .refine((d) => d.phone !== "" || d.email !== "", {
-    message: "Add a phone number or email so I can get back to you.",
-    path: ["email"],
+  .superRefine((d, ctx) => {
+    if (d.contactBy === "email" && d.email === "") {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["email"], message: "Add your email so I can write back." });
+    } else if ((d.contactBy === "call" || d.contactBy === "text") && d.phone === "") {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["phone"], message: `Add your phone number so I can ${d.contactBy} you.` });
+    } else if (d.phone === "" && d.email === "") {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["email"], message: "Add a phone number or email so I can get back to you." });
+    }
   });
 
 const homeValueSchema = z.object({
@@ -51,6 +58,7 @@ const homeValueSchema = z.object({
 });
 
 const interestLabels = { buying: "Buying", selling: "Selling", both: "Buying and selling", question: "Just a question" };
+const contactByLabels = { call: "Call", text: "Text", email: "Email" };
 const timelineLabels = { "0-3": "0–3 months", "3-12": "3–12 months", curious: "Just curious" };
 
 function read(formData: FormData, keys: string[]) {
@@ -85,15 +93,22 @@ export async function submitContact(_prev: FormState, formData: FormData): Promi
   // Honeypot: real people never see this field.
   if (String(formData.get("company") ?? "") !== "") return { status: "success" };
 
-  const values = read(formData, ["interest", "name", "phone", "email", "message"]);
-  const parsed = contactSchema.safeParse(values);
+  const values = read(formData, ["interest", "contactBy", "name", "phone", "email", "message"]);
+  const parsed = contactSchema.safeParse({ ...values, contactBy: values.contactBy || undefined });
   if (!parsed.success) {
     return { status: "error", message: "A couple of things need a look.", errors: parsed.error.flatten().fieldErrors, values };
   }
   const d = parsed.data;
   const sent = await deliverLead(
     `New website message — ${interestLabels[d.interest]} — ${d.name}`,
-    { Interest: interestLabels[d.interest], Name: d.name, Phone: d.phone, Email: d.email, Message: d.message },
+    {
+      Interest: interestLabels[d.interest],
+      Name: d.name,
+      Phone: d.phone,
+      Email: d.email,
+      ...(d.contactBy && { "Best way to reach": contactByLabels[d.contactBy] }),
+      Message: d.message,
+    },
     d.email,
   );
   if (sent !== true) return { status: "error", message: sent, values };

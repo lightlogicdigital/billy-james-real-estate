@@ -2,46 +2,55 @@ import Image from "next/image";
 import { faqs } from "@/content/faqs";
 import { home } from "@/content/home";
 import { site } from "@/content/site";
-import { ButtonLink, Container, Eyebrow, Heading, PlusIcon, cn } from "./ui";
+import { Wrap } from "./HomeSections";
+import { ButtonLink, Container, Heading, Kicker } from "./ui";
 
-/** Accordion built on <details>, so it works without JavaScript. First item open. */
-export function FaqSection({ tone = "white" }: { tone?: "white" | "sand" }) {
-  const items = faqs.slice(0, 4);
+/**
+ * FAQ accordion (contact page), built on <details> so it works without JavaScript. First item open.
+ * Skips the "what's my home worth" question, which the Home Value page answers in full.
+ */
+export function FaqSection() {
+  const items = faqs.slice(1, 5);
   return (
-    <section aria-labelledby="faq-title" className={cn("py-16 lg:py-32", tone === "sand" ? "bg-surface" : "bg-background")}>
-      <Container className="flex flex-col gap-10 lg:flex-row lg:gap-24">
-        <div data-reveal-stagger className="flex flex-col gap-5 lg:w-[440px] lg:shrink-0">
-          <Eyebrow>{home.faq.eyebrow}</Eyebrow>
-          <h2 id="faq-title" className="font-display text-[30px] font-medium leading-[1.2] tracking-[-0.03em] md:text-[40px] lg:text-h2">
-            {home.faq.title.lead}
-            <br />
-            <span className="text-muted">{home.faq.title.muted}</span>
-          </h2>
-          <p className="text-lg leading-[1.65] text-muted">
-            Don&apos;t see yours? Call or text me at{" "}
-            <a href={site.phoneHref} className="font-semibold text-primary underline-offset-4 hover:underline">
-              {site.phone}
-            </a>{" "}
-            — happy to help, even if you&apos;re a year away from moving.
-          </p>
+    <section aria-labelledby="faq-title">
+      <Wrap>
+        <div className="flex flex-col gap-10 border-t border-hairline pb-20 pt-16 lg:grid lg:grid-cols-[minmax(0,400px)_minmax(0,620px)] lg:justify-between lg:gap-x-12 lg:pb-[120px] lg:pt-[104px]">
+          <div data-reveal-stagger className="flex flex-col items-start gap-5">
+            <Kicker>{home.faq.eyebrow}</Kicker>
+            <h2 id="faq-title" className="font-display text-[34px] font-normal leading-[1.15] tracking-[-0.03em] sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
+              {home.faq.title.lead}
+              <br />
+              <em className="italic">{home.faq.title.muted}</em>
+            </h2>
+            <p className="text-[17px] leading-7 text-muted">
+              Don&apos;t see yours? Call or text me at{" "}
+              <a href={site.phoneHref} className="text-foreground underline decoration-quiet underline-offset-4 hover:decoration-foreground">
+                {site.phone}
+              </a>{" "}
+              — happy to help, even if you&apos;re a year away from moving.
+            </p>
+          </div>
+          <div data-reveal-stagger className="border-b border-hairline">
+            {items.map((faq, i) => (
+              <details key={faq.question} open={i === 0} className="group border-t border-hairline">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-[26px] text-[19px] leading-[28px] tracking-[-0.01em] sm:text-[21px] sm:leading-[30px] [&::-webkit-details-marker]:hidden">
+                  {faq.question}
+                  <span
+                    aria-hidden
+                    className="flex size-9 shrink-0 items-center justify-center rounded-full bg-mist transition-colors group-open:bg-foreground group-open:text-white group-hover:bg-hairline group-open:group-hover:bg-foreground"
+                  >
+                    <svg viewBox="0 0 16 16" className="size-3.5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+                      <path d="M3 8h10" />
+                      <path d="M8 3v10" className="origin-center transition-transform [transform-box:fill-box] group-open:scale-y-0" />
+                    </svg>
+                  </span>
+                </summary>
+                <p className="-mt-3.5 max-w-[540px] pb-[26px] text-base leading-[26px] text-muted">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
         </div>
-        <div data-reveal-stagger className="flex-1 border-t border-border">
-          {items.map((faq, i) => (
-            <details key={faq.question} open={i === 0} className="group border-b border-border">
-              <summary className="flex cursor-pointer list-none items-center gap-6 py-6 text-lg font-medium leading-snug md:py-7 md:text-xl [&::-webkit-details-marker]:hidden">
-                <span className="flex-1">{faq.question}</span>
-                <span
-                  aria-hidden
-                  className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border transition-colors group-open:border-primary group-open:bg-primary group-open:text-white"
-                >
-                  <PlusIcon className="size-4 transition-transform group-open:rotate-45" />
-                </span>
-              </summary>
-              <p className="max-w-[640px] pb-7 leading-[1.65] text-muted">{faq.answer}</p>
-            </details>
-          ))}
-        </div>
-      </Container>
+      </Wrap>
     </section>
   );
 }

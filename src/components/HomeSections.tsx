@@ -512,7 +512,7 @@ export function GetInTouch() {
           </ul>
         </div>
         <div data-reveal className="lg:w-[600px] lg:shrink-0">
-          <ContactForm dark title={null} />
+          <ContactForm dark />
         </div>
       </Wrap>
     </section>
