@@ -93,9 +93,8 @@ export function HomeHero() {
   const { hero } = home;
   return (
     <section data-hero aria-labelledby="hero-title" className="px-2 pt-2 sm:px-2.5 sm:pt-2.5">
-      {/* Fills the screen. Below lg it stops ~88px short so the floating call bar
-          (StickyCallBar) sits under the photo instead of over the buttons. */}
-      <div className="relative isolate flex h-[calc(100svh-96px)] min-h-[640px] flex-col justify-end overflow-hidden rounded-[24px] bg-[#2e3d2a] sm:rounded-[32px] lg:h-[calc(100svh-20px)]">
+      {/* Fills the screen at every size (the mobile call bar stays hidden over the hero). */}
+      <div className="relative isolate flex h-[calc(100svh-16px)] min-h-[640px] flex-col justify-end overflow-hidden rounded-[24px] bg-[#2e3d2a] sm:h-[calc(100svh-20px)] sm:rounded-[32px]">
         <Image
           src={hero.image.src}
           alt={hero.image.alt}

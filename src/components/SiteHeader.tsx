@@ -19,6 +19,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const menu = useRef<HTMLDivElement>(null);
+  const scrolled = useScrolledPast(40);
 
   // Menu links settle in one after another.
   useGSAP(
@@ -100,18 +101,28 @@ export function SiteHeader() {
           </Link>
         </div>
 
-        <button
-          ref={menuButton}
-          type="button"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          onClick={() => setOpen(true)}
-          className="flex size-10 items-center justify-center rounded-full bg-white lg:hidden"
-        >
-          <MenuIcon className="size-5" />
-          <span className="sr-only">Open menu</span>
-        </button>
+        {/* Holds the menu button's place; the button itself lives outside the pill because
+            the pill's backdrop blur would make `fixed` pin to the pill instead of the screen. */}
+        <span aria-hidden className="size-10 shrink-0 lg:hidden" />
       </div>
+
+      {/* Mobile menu button: pinned to the viewport at the exact spot it occupies in the pill,
+          so it stays in reach while the page scrolls. */}
+      <button
+        ref={menuButton}
+        type="button"
+        aria-expanded={open}
+        aria-controls="mobile-menu"
+        onClick={() => setOpen(true)}
+        className={cn(
+          "fixed z-40 flex size-10 items-center justify-center rounded-full bg-white transition-shadow duration-300 lg:hidden",
+          overlay ? "right-[18px] top-6 sm:right-[30px] sm:top-8" : "right-[18px] top-[18px] sm:right-[30px] sm:top-[22px]",
+          scrolled && "shadow-[0_6px_20px_rgba(19,37,63,0.22)]",
+        )}
+      >
+        <MenuIcon className="size-5" />
+        <span className="sr-only">Open menu</span>
+      </button>
 
       {open && (
         <div
@@ -186,12 +197,47 @@ export function SiteHeader() {
   );
 }
 
-/** Mobile-only floating bar so Billy is always one tap away. */
+/** True once the page has scrolled more than `px` (drives the floating menu button's shadow). */
+function useScrolledPast(px: number) {
+  const [past, setPast] = useState(false);
+  useEffect(() => {
+    const update = () => setPast(window.scrollY > px);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [px]);
+  return past;
+}
+
+/**
+ * Mobile-only floating bar so Billy is always one tap away. On the homepage it stays
+ * tucked away while the hero fills the screen and slides up once the hero is mostly
+ * scrolled past (and back down on the way up); elsewhere it's always shown.
+ */
 export function StickyCallBar() {
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+  const [heroInView, setHeroInView] = useState(onHome);
+
+  useEffect(() => {
+    if (!onHome) return;
+    const hero = document.querySelector("[data-hero]");
+    if (!hero) return;
+    const io = new IntersectionObserver(([entry]) => setHeroInView(entry.intersectionRatio > 0.35), { threshold: [0, 0.35, 1] });
+    io.observe(hero);
+    return () => io.disconnect();
+  }, [onHome]);
+
+  const hidden = onHome && heroInView;
   return (
     <aside
       aria-label="Quick contact"
-      className="fixed inset-x-3 bottom-4 z-20 flex gap-2 rounded-full bg-white p-2 shadow-[0_12px_32px_rgba(19,37,63,0.22)] lg:hidden"
+      aria-hidden={hidden || undefined}
+      inert={hidden}
+      className={cn(
+        "fixed inset-x-3 bottom-4 z-20 flex gap-2 rounded-full bg-white p-2 shadow-[0_12px_32px_rgba(19,37,63,0.22)] transition-[translate,opacity] duration-300 ease-out motion-reduce:transition-none lg:hidden",
+        hidden && "pointer-events-none translate-y-[140%] opacity-0",
+      )}
     >
       <a
         href={site.phoneHref}
