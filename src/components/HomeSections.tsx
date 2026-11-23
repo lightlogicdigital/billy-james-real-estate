@@ -101,7 +101,7 @@ export function HomeHero() {
           preload
           sizes="(min-width: 1440px) 1420px, 100vw"
           data-hero-media
-          className="-z-20 object-cover object-[50%_28%]"
+          className="-z-20 object-cover object-[78%_50%] lg:object-[72%_50%]"
         />
         <div
           aria-hidden
