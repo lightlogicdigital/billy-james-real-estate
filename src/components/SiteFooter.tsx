@@ -14,7 +14,7 @@ function Wrap({ className, children }: { className?: string; children: ReactNode
 
 /**
  * Rounded night panel inset from the page edge: lighthouse sky with the sign-off,
- * links on the dark shore, fine print, then a giant wordmark cropped at the bottom.
+ * links on the dark shore, then the fine print.
  */
 export function SiteFooter() {
   return (
@@ -83,13 +83,6 @@ export function SiteFooter() {
               </a>
             </p>
           </Wrap>
-        </div>
-
-        {/* ---------- Giant wordmark, cropped at the panel's bottom edge ---------- */}
-        <div aria-hidden className="overflow-hidden px-3 pt-2 text-center">
-          <p className="translate-y-[5%] whitespace-nowrap font-display text-[clamp(56px,15.2vw,212px)] leading-[0.82] tracking-[-0.05em]">
-            Billy James
-          </p>
         </div>
       </div>
     </footer>

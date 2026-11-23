@@ -30,7 +30,7 @@ export const home = {
   meet: {
     kicker: "Meet Billy",
     statement: "I'm a Hampton Roads native and a military and first-responder veteran.",
-    quiet: "I run my business the way I served: show up, tell the truth, and get the job done — first home or fifth.",
+    quiet: "I run my business the way I served: show up, tell the truth, and get the job done — first home or fifth home.",
     featuredLabel: "As seen on",
   },
   help: {

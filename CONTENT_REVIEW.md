@@ -9,7 +9,7 @@ Testimonials are used word for word from the current site and are not listed her
 |---|---|---|
 | Meet Billy | "I'm a Hampton Roads native and a military and first-responder veteran." | Accurate as written? Any branch or department you'd like named? |
 | Meet Billy | "I run my business the way I served: show up, tell the truth, get the job done." | Sounds like you? |
-| Meet Billy | "…get the job done — first home or fifth." | — |
+| Meet Billy | "…get the job done — first home or fifth home." | — |
 | For buyers | "I negotiate like it's my own money, from the first offer to the closing table." | Comfortable with this line? |
 | For buyers | "Straight talk about the house, the street, and the price — the same thing I'd tell my own family." | Sounds like you? |
 | For sellers | "Priced right" · "Launched well" · "Negotiated hard" cards (pricing from recent street sales, a polished listing and showing plan, staying in your corner through inspections and appraisals) | Matches how you work with sellers? |

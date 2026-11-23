@@ -93,7 +93,9 @@ export function HomeHero() {
   const { hero } = home;
   return (
     <section data-hero aria-labelledby="hero-title" className="px-2 pt-2 sm:px-2.5 sm:pt-2.5">
-      <div className="relative isolate flex min-h-[680px] flex-col justify-end overflow-hidden rounded-[24px] bg-[#c9b79c] sm:min-h-[760px] sm:rounded-[32px] lg:h-[880px] lg:min-h-0">
+      {/* Fills the screen. Below lg it stops ~88px short so the floating call bar
+          (StickyCallBar) sits under the photo instead of over the buttons. */}
+      <div className="relative isolate flex h-[calc(100svh-96px)] min-h-[640px] flex-col justify-end overflow-hidden rounded-[24px] bg-[#2e3d2a] sm:rounded-[32px] lg:h-[calc(100svh-20px)]">
         <Image
           src={hero.image.src}
           alt={hero.image.alt}
@@ -101,40 +103,45 @@ export function HomeHero() {
           preload
           sizes="(min-width: 1440px) 1420px, 100vw"
           data-hero-media
-          className="-z-20 object-cover object-[78%_50%] lg:object-[72%_50%]"
+          className="-z-20 object-cover object-[78%_50%] lg:object-[62%_50%]"
         />
         <div
           aria-hidden
           className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(19,37,63,0.25)_0%,rgba(19,37,63,0)_18%,rgba(19,37,63,0)_32%,rgba(19,37,63,0.62)_56%,rgba(19,37,63,0.9)_100%)] md:bg-[linear-gradient(180deg,rgba(19,37,63,0.18)_0%,rgba(19,37,63,0)_20%,rgba(19,37,63,0)_46%,rgba(19,37,63,0.5)_66%,rgba(19,37,63,0.85)_100%)]"
         />
         <div data-depth="copy">
-          <Wrap className="flex flex-col gap-9 pb-7 text-white md:pb-12 lg:flex-row lg:items-end lg:justify-between lg:pb-16">
-            <div className="flex flex-col gap-4 lg:max-w-[640px] lg:gap-[18px]">
-              <Kicker tone="light" intro>
-                <span className="sm:hidden">{hero.kickerShort}</span>
-                <span className="hidden sm:inline">{hero.kicker}</span>
-              </Kicker>
-              <h1
-                id="hero-title"
-                data-split
-                className="font-display text-[40px] font-normal leading-[1.1] tracking-[-0.03em] text-balance sm:text-[48px] lg:text-[56px] lg:leading-[62px]"
-              >
-                {/* Two lines from sm up; one flowing sentence on phones (SplitText always honors <br>). */}
-                <span className="sm:block">{hero.title.line1}</span>{" "}
-                <span className="sm:block">
-                  {hero.title.lead} <em className="italic">{hero.title.em}</em>
-                </span>
-              </h1>
-              <div data-intro className="flex flex-col gap-2.5 pt-2.5 sm:flex-row">
-                <ButtonLink href={hero.primaryCta.href} variant="white" size="pill">
-                  {hero.primaryCta.label}
-                </ButtonLink>
-                <ButtonLink href={hero.secondaryCta.href} variant="accent" size="pill">
-                  {hero.secondaryCta.label}
-                </ButtonLink>
+          {/* From lg up the copy scales with the screen: the Wrap sets one fluid base size
+              (capped by height so short, wide windows don't overflow) and everything inside
+              is sized in em, so kicker, headline, buttons and stats stay in proportion. */}
+          <Wrap className="pb-7 text-white md:pb-12 lg:max-w-none lg:px-[5.5em] lg:pb-[4em] lg:text-[length:clamp(12px,min(1.15vw,1.9svh),26px)]">
+            <div className="flex flex-col gap-9 lg:w-fit lg:max-w-[52em] lg:gap-[2.2em]">
+              <div className="flex flex-col gap-4 lg:gap-[1.1em]">
+                <Kicker tone="light" intro className="lg:text-[max(0.82em,12px)]">
+                  <span className="sm:hidden">{hero.kickerShort}</span>
+                  <span className="hidden sm:inline">{hero.kicker}</span>
+                </Kicker>
+                <h1
+                  id="hero-title"
+                  data-split
+                  className="font-display text-[40px] font-normal leading-[1.1] tracking-[-0.03em] text-balance sm:text-[48px] lg:text-[4.4em] lg:leading-[1.08]"
+                >
+                  {/* Two lines from sm up; one flowing sentence on phones (SplitText always honors <br>). */}
+                  <span className="sm:block">{hero.title.line1}</span>{" "}
+                  <span className="sm:block">
+                    {hero.title.lead} <em className="italic">{hero.title.em}</em>
+                  </span>
+                </h1>
+                <div data-intro className="flex flex-col gap-2.5 pt-2.5 sm:flex-row lg:gap-[0.7em] lg:pt-[0.7em]">
+                  <ButtonLink href={hero.primaryCta.href} variant="white" size="pill" className={heroButton}>
+                    {hero.primaryCta.label}
+                  </ButtonLink>
+                  <ButtonLink href={hero.secondaryCta.href} variant="accent" size="pill" className={heroButton}>
+                    {hero.secondaryCta.label}
+                  </ButtonLink>
+                </div>
               </div>
+              <HeroStats className="hidden sm:grid sm:grid-cols-3 sm:gap-14 sm:border-t sm:border-white/20 sm:pt-6 lg:flex lg:w-fit lg:gap-[3.4em] lg:pt-[1.5em]" />
             </div>
-            <HeroStats className="hidden sm:grid sm:grid-cols-3 sm:gap-14 sm:border-t sm:border-white/20 sm:pt-6 lg:flex lg:border-0 lg:pb-1.5 lg:pt-0" />
           </Wrap>
         </div>
       </div>
@@ -144,15 +151,18 @@ export function HomeHero() {
   );
 }
 
+/** Hero pills grow with the hero's fluid base size from lg up (same 15px/22px proportions). */
+const heroButton = "lg:px-[1.45em] lg:py-[0.8em] lg:text-[max(1em,15px)]";
+
 function HeroStats({ className, tone = "light" }: { className?: string; tone?: "light" | "ink" }) {
   return (
     <dl data-intro className={className}>
       {home.hero.stats.map((stat) => {
         const star = stat.value.endsWith("★");
         return (
-          <div key={stat.label} className="flex flex-col-reverse gap-1.5">
-            <dt className={cn("text-[13px] leading-[18px] sm:text-sm", tone === "light" ? "text-white/85" : "text-muted")}>{stat.label}</dt>
-            <dd className="whitespace-nowrap text-[28px] leading-none tracking-[-0.03em] sm:text-[40px] sm:leading-[44px]">
+          <div key={stat.label} className="flex flex-col-reverse gap-1.5 lg:gap-[0.4em]">
+            <dt className={cn("text-[13px] leading-[18px] sm:text-sm lg:text-[max(0.875em,13px)] lg:leading-[1.3]", tone === "light" ? "text-white/85" : "text-muted")}>{stat.label}</dt>
+            <dd className="whitespace-nowrap text-[28px] leading-none tracking-[-0.03em] sm:text-[40px] sm:leading-[44px] lg:text-[2.6em] lg:leading-[1.1]">
               <span data-count>{star ? stat.value.slice(0, -1) : stat.value}</span>
               {star && (
                 <>
@@ -237,6 +247,9 @@ export function HowIHelp() {
 
 /* ---------- For sellers: three points + recently sold banner ---------- */
 
+/** Sold-home pills: mist on the white page (phones), frosted white over the photo (sm+). */
+const salePill = "rounded-full bg-mist transition-colors hover:bg-hairline sm:bg-white/95 sm:backdrop-blur-sm sm:hover:bg-white";
+
 export function ForSellers() {
   const { sellers } = home;
   const sale = getListing(sellers.featuredSale);
@@ -257,19 +270,24 @@ export function ForSellers() {
             ))}
           </ul>
           {sale?.image && (
-            <div data-parallax-frame className="relative isolate flex h-[380px] flex-col justify-end overflow-hidden rounded-[24px] bg-mist sm:h-[420px] lg:h-[460px]">
-              <Image
-                src={sale.image.src}
-                alt={sale.image.alt}
-                fill
-                sizes="(min-width: 1200px) 1120px, 100vw"
-                data-parallax-media
-                className="-z-10 object-cover"
-              />
-              <div className="flex flex-wrap items-center gap-2.5 p-4 sm:gap-4 sm:p-6">
+            // Aspect ratios (not fixed heights) keep the whole house in frame at every width:
+            // the crop is anchored to the top so the roofline survives the parallax's 1.1 scale.
+            // From sm up the pills sit on the lawn; on phones they drop below the photo.
+            <div className="relative">
+              <div data-parallax-frame className="relative isolate aspect-[4/3] overflow-hidden rounded-[24px] bg-mist sm:aspect-[16/10] lg:aspect-[19/10]">
+                <Image
+                  src={sale.image.src}
+                  alt={sale.image.alt}
+                  fill
+                  sizes="(min-width: 1200px) 1120px, 100vw"
+                  data-parallax-media
+                  className="-z-10 object-cover object-[45%_0%]"
+                />
+              </div>
+              <div className="flex flex-wrap items-center gap-2.5 pt-3 sm:absolute sm:inset-x-0 sm:bottom-0 sm:gap-4 sm:p-6">
                 <Link
                   href={`/listings/${sale.slug}`}
-                  className="flex items-center gap-3 rounded-full bg-white/95 py-2.5 pl-2.5 pr-[18px] backdrop-blur-sm transition-colors hover:bg-white"
+                  className={cn("flex items-center gap-3 py-2.5 pl-2.5 pr-[18px]", salePill)}
                 >
                   <span className="rounded-full bg-foreground px-3 py-1.5 text-xs font-medium uppercase tracking-[0.12em] text-white">Sold</span>
                   <span className="text-[15px]">
@@ -277,7 +295,7 @@ export function ForSellers() {
                   </span>
                   <span className="hidden text-[15px] text-muted sm:inline">{formatPrice(sale.soldPrice)}</span>
                 </Link>
-                <Link href={sellers.allSales.href} className="group flex items-center gap-2 rounded-full bg-white/95 px-[18px] py-2.5 text-[15px] backdrop-blur-sm transition-colors hover:bg-white">
+                <Link href={sellers.allSales.href} className={cn("group flex items-center gap-2 px-[18px] py-2.5 text-[15px]", salePill)}>
                   {sellers.allSales.label}
                   <ArrowIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
