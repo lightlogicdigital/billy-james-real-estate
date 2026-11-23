@@ -101,6 +101,65 @@ html.motion:not(.motion-ready) :is([data-intro], [data-split], [data-reveal], [d
   }
 }
 
+/*
+ * Homepage intro ("porch light", src/components/HomeIntro.tsx). The <head> script adds
+ * `intro` to <html> on a visitor's first homepage load of the session. The logo plays in
+ * on CSS alone, from first paint, so it doubles as a loading screen before JavaScript
+ * arrives; HomeIntro then lifts the panel and removes the class.
+ */
+[data-home-intro] {
+  display: none;
+}
+html.intro [data-home-intro] {
+  display: flex;
+}
+html.intro [data-intro-badge] {
+  animation: intro-badge 0.7s cubic-bezier(0.34, 1.45, 0.64, 1) 0.1s both;
+}
+html.intro [data-intro-dot] {
+  animation: intro-dot 0.45s cubic-bezier(0.34, 1.9, 0.64, 1) 0.55s both;
+}
+html.intro [data-intro-glow] {
+  animation: intro-glow 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.58s both;
+}
+html.intro [data-intro-word] {
+  animation: intro-word 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.68s both;
+}
+html.intro [data-intro-word="2"] {
+  animation-delay: 0.78s;
+}
+@keyframes intro-badge {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+@keyframes intro-dot {
+  from {
+    transform: scale(0);
+  }
+}
+/* The porch light flicks on: a quick bloom that settles to a steady glow. */
+@keyframes intro-glow {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+}
+@keyframes intro-word {
+  from {
+    transform: translateY(110%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

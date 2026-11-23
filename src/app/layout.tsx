@@ -5,6 +5,7 @@ import { SiteHeader, StickyCallBar } from "@/components/SiteHeader";
 import { JsonLd, agentJsonLd } from "@/components/JsonLd";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { site } from "@/content/site";
+import { INTRO_REVEAL_EVENT } from "@/lib/intro";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -35,18 +36,21 @@ export const viewport: Viewport = {
   themeColor: "#1E4E8C",
 };
 
+/**
+ * Runs before first paint. When motion is allowed it adds `motion` (Motion.tsx), and on the
+ * first homepage load of a browser session (not a link to a section) it also adds `intro`
+ * for the porch-light intro (HomeIntro.tsx). A safety timer drops the intro if the page's
+ * JavaScript never takes over.
+ */
+const headScript = `(function(){var d=document.documentElement;if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches))return;d.classList.add('motion');try{var b=${JSON.stringify(process.env.NEXT_PUBLIC_BASE_PATH ?? "")},p=location.pathname;if((p===b+'/'||p===b)&&!location.hash&&!sessionStorage.getItem('bj-intro')){sessionStorage.setItem('bj-intro','1');d.classList.add('intro');window.__bjIntroTimer=setTimeout(function(){d.classList.remove('intro');dispatchEvent(new Event(${JSON.stringify(INTRO_REVEAL_EVENT)}))},6000)}}catch(e){}})()`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    // suppressHydrationWarning: the inline script below adds the `motion` class before React hydrates.
+    // suppressHydrationWarning: the inline script below adds classes to <html> before React hydrates.
     // data-scroll-behavior: Next switches off the smooth scrolling in globals.css during page changes.
     <html lang="en" data-scroll-behavior="smooth" className={`${jakarta.variable} antialiased`} suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches){document.documentElement.classList.add('motion')}",
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: headScript }} />
       </head>
       <body className="flex min-h-screen flex-col">
         <ScrollToTop />
