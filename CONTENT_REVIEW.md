@@ -41,5 +41,5 @@ The Properties Sold page now uses the deals on Billy's Homes.com profile
 ## Still missing
 
 - A public **email address** (the current site doesn't list one).
-- **Neighborhood photos** for Chesapeake, Norfolk, and Suffolk (the homepage uses line drawings, but the city pages will want real photos).
+- **Neighborhood photos:** Chesapeake (Battle of Great Bridge monument), Norfolk (USS Wisconsin at Nauticus), and Suffolk (bald cypress in the Great Dismal Swamp) now use open-licensed Wikimedia Commons photos, credited under each photo as their licenses require. If Billy has his own shots (Norfolk's mermaid statues or Suffolk's Mr. Peanut, say), they can replace these; originals live in the git-ignored `originals/` folder.
 - A description for **919 Johnstown Rd** (the live listing has none).

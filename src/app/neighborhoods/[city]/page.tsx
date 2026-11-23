@@ -63,29 +63,55 @@ export default async function NeighborhoodPage({ params }: PageProps<"/neighborh
               ← Neighborhoods
             </Link>
             <div data-hero-rise className="relative isolate aspect-[4/3] w-full overflow-hidden rounded-md bg-[linear-gradient(180deg,#2B69AE_0%,#6FA3D8_70%,#BFD9F0_100%)] lg:aspect-square lg:w-[560px] lg:rounded-lg">
-              <Image src="/images/local/cloud.png" alt="" width={1600} height={1066} className="absolute -left-8 top-[11%] -z-10 w-[46%] opacity-85" />
-              {n.image ? (
+              {n.image?.fit === "photo" ? (
                 <Image
                   src={n.image.src}
                   alt={n.image.alt}
-                  width={1080}
-                  height={1350}
+                  fill
                   preload
-                  sizes="(min-width: 1024px) 470px, 75vw"
-                  className="absolute bottom-[-6%] right-0 w-[72%] lg:w-[84%]"
+                  sizes="(min-width: 1024px) 560px, 100vw"
+                  className="-z-10 object-cover"
+                  style={{ objectPosition: n.image.position }}
                 />
               ) : (
-                <div className="absolute inset-x-[8%] bottom-[8%] rounded-md bg-white/92 p-6">
-                  <CityArt slug={n.slug} className="mx-auto h-auto w-full max-w-[360px]" />
-                </div>
+                <>
+                  <Image src="/images/local/cloud.png" alt="" width={1600} height={1066} className="absolute -left-8 top-[11%] -z-10 w-[46%] opacity-85" />
+                  {n.image ? (
+                    <Image
+                      src={n.image.src}
+                      alt={n.image.alt}
+                      width={n.image.width}
+                      height={n.image.height}
+                      preload
+                      sizes="(min-width: 1024px) 470px, 75vw"
+                      className="absolute bottom-[-6%] right-0 w-[72%] lg:w-[84%]"
+                    />
+                  ) : (
+                    <div className="absolute inset-x-[8%] bottom-[8%] rounded-md bg-white/92 p-6">
+                      <CityArt slug={n.slug} className="mx-auto h-auto w-full max-w-[360px]" />
+                    </div>
+                  )}
+                </>
               )}
-              {n.slug === "virginia-beach" && (
+              {n.image && (
                 <span className="absolute bottom-5 left-5 hidden items-center gap-2.5 rounded-full bg-white/92 px-4 py-2.5 text-sm font-medium sm:flex">
                   <span aria-hidden className="size-2 rounded-full bg-accent" />
-                  King Neptune · 31st St Oceanfront
+                  {n.image.caption}
                 </span>
               )}
             </div>
+            {n.image?.credit && (
+              <p className="text-xs text-muted">
+                Photo:{" "}
+                <a href={n.image.credit.source} className="underline decoration-quiet underline-offset-2 hover:text-foreground">
+                  {n.image.credit.author}
+                </a>
+                ,{" "}
+                <a href={n.image.credit.licenseUrl} className="underline decoration-quiet underline-offset-2 hover:text-foreground">
+                  {n.image.credit.license}
+                </a>
+              </p>
+            )}
           </div>
         </Container>
       </section>

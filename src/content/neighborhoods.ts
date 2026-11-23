@@ -1,8 +1,26 @@
 /**
  * Neighborhood guide copy is new and intentionally qualitative (no invented
  * market stats). Billy should review every entry before launch.
- * Photos: only Virginia Beach has a local photo today — see PHOTOS_NEEDED.md.
+ * Photos: Virginia Beach's King Neptune is a cut-out (transparent background) from the old
+ * site that sits on the sky panel. The other three are open-licensed Wikimedia Commons photos
+ * shown full-bleed in the panel, so they carry a `credit` (CC BY / CC BY-SA require it).
+ * Full-size originals are kept in the git-ignored originals/ folder.
  */
+export type NeighborhoodImage = {
+  /** "cutout": transparent PNG on the sky panel; "photo": fills the panel (object-cover). */
+  fit: "cutout" | "photo";
+  /** Crop focus for photos (CSS object-position). */
+  position?: string;
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  /** Short label on the photo panel ("King Neptune · 31st St Oceanfront"). */
+  caption: string;
+  /** Attribution for open-licensed photos. */
+  credit?: { author: string; source: string; license: string; licenseUrl: string };
+};
+
 export type Neighborhood = {
   slug: string;
   city: string;
@@ -11,7 +29,7 @@ export type Neighborhood = {
   why: string[];
   areas: { name: string; note: string }[];
   goodToKnow: string[];
-  image: { src: string; alt: string } | null;
+  image: NeighborhoodImage | null;
 };
 
 export const neighborhoods: Neighborhood[] = [
@@ -37,8 +55,12 @@ export const neighborhoods: Neighborhood[] = [
       "Summer traffic near the Oceanfront is real; I'll show you the back roads.",
     ],
     image: {
+      fit: "cutout",
       src: "/images/local/king-neptune.png",
       alt: "The King Neptune statue at the Virginia Beach Oceanfront",
+      width: 1080,
+      height: 1350,
+      caption: "King Neptune · 31st St Oceanfront",
     },
   },
   {
@@ -62,7 +84,21 @@ export const neighborhoods: Neighborhood[] = [
       "School zones matter here — I'll map them for every home we see.",
       "Some areas have well and septic; I'll flag what to inspect.",
     ],
-    image: null,
+    image: {
+      fit: "photo",
+      position: "41% 50%",
+      src: "/images/local/chesapeake-great-bridge-monument.jpg",
+      alt: "The Battle of Great Bridge monument, a granite obelisk in Chesapeake's Great Bridge Battlefield park",
+      width: 2000,
+      height: 1178,
+      caption: "Battle of Great Bridge Monument",
+      credit: {
+        author: "Tere Rottink",
+        source: "https://commons.wikimedia.org/wiki/File:Great_Bridge_monument.jpg",
+        license: "CC BY-SA 3.0",
+        licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0/",
+      },
+    },
   },
   {
     slug: "norfolk",
@@ -85,7 +121,21 @@ export const neighborhoods: Neighborhood[] = [
       "Older homes have charm — and older systems. I'll help you plan for both.",
       "Tidal flooding affects some streets; we'll check history before you offer.",
     ],
-    image: null,
+    image: {
+      fit: "photo",
+      position: "50% 30%",
+      src: "/images/local/norfolk-uss-wisconsin.jpg",
+      alt: "The bow of the battleship USS Wisconsin, berthed at Nauticus in downtown Norfolk",
+      width: 1201,
+      height: 1800,
+      caption: "USS Wisconsin · Nauticus, Downtown",
+      credit: {
+        author: "Tony Alter",
+        source: "https://commons.wikimedia.org/wiki/File:USS_Wisconsin_BB-64_(7760354398).jpg",
+        license: "CC BY 2.0",
+        licenseUrl: "https://creativecommons.org/licenses/by/2.0/",
+      },
+    },
   },
   {
     slug: "suffolk",
@@ -108,7 +158,21 @@ export const neighborhoods: Neighborhood[] = [
       "Many homes sit on larger lots — I'll help you weigh upkeep against space.",
       "Commute times vary a lot by side of town; we'll test-drive yours.",
     ],
-    image: null,
+    image: {
+      fit: "photo",
+      position: "50% 62%",
+      src: "/images/local/suffolk-dismal-swamp-cypress.jpg",
+      alt: "The buttressed trunk of a bald cypress standing in the water of the Great Dismal Swamp",
+      width: 1199,
+      height: 1800,
+      caption: "Bald cypress · Great Dismal Swamp",
+      credit: {
+        author: "U.S. Fish and Wildlife Service",
+        source: "https://commons.wikimedia.org/wiki/File:Bald_cypress_at_the_Great_Dismal_Swamp_National_Wildlife_Refuge,_Va.jpg",
+        license: "CC BY 2.0",
+        licenseUrl: "https://creativecommons.org/licenses/by/2.0/",
+      },
+    },
   },
 ];
 
