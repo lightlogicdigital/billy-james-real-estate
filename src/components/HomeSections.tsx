@@ -122,7 +122,7 @@ export function HomeHero() {
                 <h1
                   id="hero-title"
                   data-split
-                  className="font-display text-[40px] font-normal leading-[1.1] tracking-[-0.03em] text-balance sm:text-[48px] lg:text-[4.4em] lg:leading-[1.08]"
+                  className="font-display text-[40px] font-normal leading-[1.1] tracking-[-0.045em] [word-spacing:0.015em] text-balance sm:text-[48px] lg:text-[4.4em] lg:leading-[1.08]"
                 >
                   {/* Two lines from sm up; one flowing sentence on phones (SplitText always honors <br>). */}
                   <span className="sm:block">{hero.title.line1}</span>{" "}
