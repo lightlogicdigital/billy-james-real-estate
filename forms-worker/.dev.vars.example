@@ -1,0 +1,7 @@
+# Copy to .dev.vars for `npm run dev`. Wrangler reads it in place of the deployed settings.
+# DRY_RUN logs each email to the terminal instead of sending it.
+ALLOWED_ORIGINS=http://localhost:3000
+DRY_RUN=1
+# To send real email locally, remove DRY_RUN and add:
+# LEAD_TO=you@example.com
+# RESEND_API_KEY=re_...

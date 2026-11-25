@@ -1,7 +1,7 @@
 # Builds the static export and publishes it to GitHub Pages on every push to main.
 # Repo settings: Pages → Source = "GitHub Actions".
-# Optional repo variable FORM_ENDPOINT (Settings → Secrets and variables → Actions → Variables):
-# the Formspree (or similar) URL the contact and home value forms post to.
+# Repo variable FORM_ENDPOINT (Settings → Secrets and variables → Actions → Variables):
+# the forms Worker's URL (forms-worker/), which the contact and home value forms post to.
 name: Deploy to GitHub Pages
 
 on:

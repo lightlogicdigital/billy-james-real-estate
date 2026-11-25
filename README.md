@@ -48,10 +48,38 @@ visitors who prefer reduced motion.
 
 ## Lead forms
 
-The Contact and Home Value forms validate in the browser (Zod + honeypot, `src/lib/leads.ts`) and POST the
-lead as JSON to a form service such as [Formspree](https://formspree.io), which emails it to Billy.
-Set the form's endpoint as `NEXT_PUBLIC_FORM_ENDPOINT` (see `.env.example`) locally, and as the repo
-variable `FORM_ENDPOINT` for the live site. Until it's set, the live forms ask visitors to call or text.
+The Contact and Home Value forms validate in the browser (Zod + honeypot, `src/lib/leads.ts`), then POST the
+lead as JSON to a small Cloudflare Worker in `forms-worker/`. The Worker accepts posts only from the site's
+own pages, checks what was sent, and emails the lead to Billy through [Resend](https://resend.com) with the
+visitor's email as reply-to. Both free tiers cover far more than this site needs (Workers: 100,000 requests
+a day; Resend: 100 emails a day, 3,000 a month).
+
+The site finds the Worker through `NEXT_PUBLIC_FORM_ENDPOINT`, set from the repo variable `FORM_ENDPOINT`
+at build time. Until it's set, the live forms ask visitors to call or text.
+
+### One-time setup
+
+1. **Resend** (free account): Domains → add `billyjamesrealestate.com`, then add the DNS records it lists at
+   Hover. They live on their own names (`resend._domainkey`, `send`), so Billy's Hover email isn't touched.
+   Once the domain shows as verified, create an API key with sending access.
+2. **Cloudflare** (free account), from `forms-worker/`:
+   ```bash
+   npm install
+   npx wrangler login
+   npm run deploy                          # prints the Worker's URL
+   npx wrangler secret put LEAD_TO         # the inbox that should get leads
+   npx wrangler secret put RESEND_API_KEY  # the key from step 1
+   ```
+3. **GitHub**: set the repo variable `FORM_ENDPOINT` to the Worker's URL, then re-run the deploy workflow.
+
+Allowed origins and the sender address are in `forms-worker/wrangler.jsonc`. To watch live requests and any
+Resend errors: `npx wrangler tail` in `forms-worker/`.
+
+### Testing locally
+
+`cp forms-worker/.dev.vars.example forms-worker/.dev.vars`, run `npm run dev` in `forms-worker/` (port 8787),
+and set `NEXT_PUBLIC_FORM_ENDPOINT=http://localhost:8787` in `.env.local`. With `DRY_RUN=1` (the default in
+the example), the Worker prints each email to its terminal instead of sending it.
 
 ## Deploy (GitHub Pages)
 

@@ -3,8 +3,8 @@ import { site } from "@/content/site";
 
 /*
  * Lead forms for a static site (GitHub Pages has no server): the browser validates
- * the form, then POSTs it as JSON to a form service such as Formspree, set at build
- * time in NEXT_PUBLIC_FORM_ENDPOINT (e.g. https://formspree.io/f/abcdwxyz).
+ * the form, then POSTs it as JSON to the forms Worker (forms-worker/), which emails it
+ * to Billy. Its URL is set at build time in NEXT_PUBLIC_FORM_ENDPOINT.
  *
  * Without an endpoint: in development the lead is logged and the visitor sees a
  * success message; in a production build the visitor is asked to call or text.
@@ -67,7 +67,7 @@ function read(formData: FormData, keys: string[]) {
 
 const sendFailed = `Something went wrong sending that. Please call or text ${site.phone} instead.`;
 
-/** POSTs a lead to the form service. Formspree reads `_subject` and `_replyto`. */
+/** POSTs a lead to the forms Worker, which emails it with `replyTo` as the reply-to address. */
 async function deliverLead(subject: string, fields: Record<string, string>, replyTo?: string): Promise<true | string> {
   const endpoint = process.env.NEXT_PUBLIC_FORM_ENDPOINT;
   if (!endpoint) {
@@ -81,7 +81,7 @@ async function deliverLead(subject: string, fields: Record<string, string>, repl
     const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ _subject: subject, _replyto: replyTo || undefined, ...fields }),
+      body: JSON.stringify({ subject, replyTo: replyTo || undefined, fields }),
     });
     return res.ok ? true : sendFailed;
   } catch {

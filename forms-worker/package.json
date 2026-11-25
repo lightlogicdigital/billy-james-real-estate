@@ -1,0 +1,14 @@
+{
+  "name": "billy-james-forms",
+  "private": true,
+  "description": "Cloudflare Worker that emails the site's lead forms to Billy through Resend.",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc -p ."
+  },
+  "devDependencies": {
+    "wrangler": "^4.168.0"
+  }
+}

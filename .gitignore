@@ -43,3 +43,8 @@ next-env.d.ts
 
 # full-size source photos (kept locally, not deployed)
 /originals/
+
+# forms worker (Cloudflare): local settings and build output
+/forms-worker/node_modules
+/forms-worker/.wrangler
+/forms-worker/.dev.vars

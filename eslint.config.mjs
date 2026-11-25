@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Cloudflare Worker for the lead forms; it has its own tsconfig.
+    "forms-worker/.wrangler/**",
   ]),
 ]);
 

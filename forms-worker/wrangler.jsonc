@@ -1,0 +1,18 @@
+// Cloudflare Worker that emails the site's lead forms to Billy (src/index.ts).
+// Deploy: `npm run deploy` from this folder. Secrets: see README → "Lead forms".
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "billy-james-forms",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "observability": { "enabled": true },
+  "vars": {
+    // Pages allowed to post leads: the live domain, and the github.io preview.
+    "ALLOWED_ORIGINS": "https://billyjamesrealestate.com,https://www.billyjamesrealestate.com,https://lightlogicdigital.github.io",
+    // Must be on a domain verified in Resend.
+    "FROM": "Billy James Real Estate <leads@billyjamesrealestate.com>",
+    "SITE_NAME": "billyjamesrealestate.com"
+  }
+  // Secrets (not in this file): LEAD_TO, RESEND_API_KEY — set with `npx wrangler secret put <NAME>`.
+}
