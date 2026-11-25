@@ -30,7 +30,6 @@ export default function ListingsPage() {
         <Container className="mt-10 lg:mt-14">
           <dl className="flex flex-wrap gap-x-16 gap-y-6 border-y border-border py-6 md:gap-x-24 md:py-8" data-reveal-stagger>
             {[
-              { value: "10", label: "homes closed" },
               { value: "$4.4M", label: "in sales" },
             ].map((s) => (
               <div key={s.label} className="flex flex-col-reverse gap-1">

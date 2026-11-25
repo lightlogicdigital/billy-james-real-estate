@@ -8,8 +8,8 @@ import { ArrowIcon, ButtonLink, Kicker, cn } from "./ui";
 
 /**
  * Shared template for the city guide pages (Paper: "Neighborhoods · Redesign").
- * Every city renders the same six blocks — hero, why people love it, areas,
- * Billy's take, more guides, and the Let's talk sign-off — from its content entry.
+ * Every city renders the same seven blocks — hero, why people love it, areas, school
+ * zones, Billy's take, more guides, and the Let's talk sign-off — from its content entry.
  */
 
 /** "Historic streets with a city pulse" → lead + italic last word. */
@@ -156,7 +156,7 @@ export function WhyLoveIt({ n }: { n: Neighborhood }) {
   );
 }
 
-/* ---------- Areas: header beside a 2×2 grid ---------- */
+/* ---------- Areas: header beside a two-column grid ---------- */
 
 const pinPath = "M12 21C12 21 19 14.5 19 9.5C19 5.6 15.9 2.5 12 2.5C8.1 2.5 5 5.6 5 9.5C5 14.5 12 21 12 21Z M12 12A2.5 2.5 0 1 0 12 7A2.5 2.5 0 1 0 12 12Z";
 
@@ -173,7 +173,8 @@ export function AreasGrid({ n }: { n: Neighborhood }) {
         </div>
         <ul data-reveal-stagger className="grid gap-4 sm:grid-cols-2 lg:w-[696px] lg:shrink-0">
           {n.areas.map((area) => (
-            <li key={area.name} className="flex flex-col gap-7 rounded-[24px] border border-hairline px-6 pb-7 pt-6 lg:gap-9">
+            // With an odd number of areas, the last card spans both columns instead of leaving a gap.
+            <li key={area.name} className="flex flex-col gap-7 rounded-[24px] border border-hairline px-6 pb-7 pt-6 sm:last:odd:col-span-2 lg:gap-9">
               <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-full bg-mist">
                 <svg viewBox="0 0 24 24" className="size-[18px]" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
                   <path d={pinPath} />
@@ -186,6 +187,44 @@ export function AreasGrid({ n }: { n: Neighborhood }) {
             </li>
           ))}
         </ul>
+      </Wrap>
+    </section>
+  );
+}
+
+/* ---------- School zones: the district's official address look-up ---------- */
+
+export function SchoolZones({ n }: { n: Neighborhood }) {
+  return (
+    <section aria-labelledby="schools-title" className="pb-16 lg:pb-28">
+      <Wrap>
+        <div
+          data-reveal
+          className="flex flex-col gap-7 rounded-[28px] bg-mist p-7 md:p-10 lg:flex-row lg:items-center lg:justify-between lg:gap-16 lg:px-14 lg:py-12"
+        >
+          <div className="flex flex-col gap-4 lg:max-w-[660px]">
+            <Kicker as="h2" id="schools-title">
+              School zones
+            </Kicker>
+            <p className="text-[19px] leading-[1.45] tracking-[-0.01em] lg:text-[22px] lg:leading-[32px]">
+              In {n.city}, schools are assigned by home address, and zones can change from year to year. Look up any
+              address with the official {n.schools.district} locator — and ask me which schools serve a home
+              you&apos;re considering.
+            </p>
+          </div>
+          <ButtonLink
+            href={n.schools.lookupUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="ink"
+            size="pill"
+            className="shrink-0 self-start lg:self-center"
+          >
+            Look up a school zone
+            <ArrowIcon className="size-4" />
+            <span className="sr-only">(opens {n.schools.district} in a new tab)</span>
+          </ButtonLink>
+        </div>
       </Wrap>
     </section>
   );

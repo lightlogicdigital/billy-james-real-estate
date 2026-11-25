@@ -28,6 +28,12 @@ export type Neighborhood = {
   intro: string;
   why: string[];
   areas: { name: string; note: string }[];
+  /**
+   * The city's school division and its official look-up for which schools serve an address.
+   * Zones are set by address and change, so the page links out instead of naming schools
+   * (and never rates them; fair housing rules discourage steering by school).
+   */
+  schools: { district: string; lookupUrl: string };
   goodToKnow: string[];
   image: NeighborhoodImage | null;
 };
@@ -48,8 +54,10 @@ export const neighborhoods: Neighborhood[] = [
       { name: "North End & Oceanfront", note: "Walk-to-the-beach living near the boardwalk and King Neptune." },
       { name: "Great Neck & Lynnhaven", note: "Waterfront and wooded lots close to the bay." },
       { name: "Kempsville", note: "Established, central neighborhoods with easy access to Town Center." },
+      { name: "Glenwood", note: "A large planned community near Salem, mostly late-'80s and '90s homes, with its own community association." },
       { name: "Red Mill & Sandbridge", note: "Family-friendly south-end living and a quieter beach." },
     ],
+    schools: { district: "Virginia Beach City Public Schools", lookupUrl: "https://www.vbschools.com/families/registration/schoollocator" },
     goodToKnow: [
       "Flood zones vary block to block — I'll help you check before you fall in love.",
       "Summer traffic near the Oceanfront is real; I'll show you the back roads.",
@@ -80,6 +88,7 @@ export const neighborhoods: Neighborhood[] = [
       { name: "Hickory", note: "Rural character, larger acreage, and newer homes." },
       { name: "Western Branch", note: "Established neighborhoods near the Elizabeth River." },
     ],
+    schools: { district: "Chesapeake Public Schools", lookupUrl: "https://www.cpschools.com/o/cps/page/school-zones-enrollment" },
     goodToKnow: [
       "School zones matter here — I'll map them for every home we see.",
       "Some areas have well and septic; I'll flag what to inspect.",
@@ -117,6 +126,7 @@ export const neighborhoods: Neighborhood[] = [
       { name: "Ocean View & East Beach", note: "Bay-front living with sandy beaches." },
       { name: "Downtown", note: "Condos and lofts close to Waterside and the arts district." },
     ],
+    schools: { district: "Norfolk Public Schools", lookupUrl: "https://norfolkjs.gisllcmaps.com/" },
     goodToKnow: [
       "Older homes have charm — and older systems. I'll help you plan for both.",
       "Tidal flooding affects some streets; we'll check history before you offer.",
@@ -154,6 +164,7 @@ export const neighborhoods: Neighborhood[] = [
       { name: "Driver & Chuckatuck", note: "Country living with room to spread out." },
       { name: "Western Suffolk", note: "Rural properties with acreage and privacy." },
     ],
+    schools: { district: "Suffolk Public Schools", lookupUrl: "https://locate.spsk12.net/" },
     goodToKnow: [
       "Many homes sit on larger lots — I'll help you weigh upkeep against space.",
       "Commute times vary a lot by side of town; we'll test-drive yours.",

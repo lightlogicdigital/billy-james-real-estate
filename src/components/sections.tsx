@@ -27,7 +27,7 @@ export function FaqSection() {
               <a href={site.phoneHref} className="text-foreground underline decoration-quiet underline-offset-4 hover:decoration-foreground">
                 {site.phone}
               </a>{" "}
-              — happy to help, even if you&apos;re a year away from moving.
+              — happy to help, even if you are a year away from moving or selling.
             </p>
           </div>
           <div data-reveal-stagger className="border-b border-hairline">

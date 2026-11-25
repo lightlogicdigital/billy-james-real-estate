@@ -46,6 +46,11 @@ The Properties Sold page now uses the deals on Billy's Homes.com profile
 - **2468 and 2472 Rollingview Ct (Virginia Beach)** were added as homes Billy sold. Price and month come from public records on Homes.com: 2468 sold Oct 2024 for $465,000, 2472 sold May 2024 for $500,000. Those pages don't name the agents, so please confirm these are Billy's sales and that he was the listing agent (they're tagged "Sold").
 - **Rollingview photos are Google Street View captures** (credited "Image: Google Street View", watermark kept). Google's terms limit Street View use in promotional material, so swap in Billy's own or the MLS listing photos when he can.
 
+## Neighborhood guides (Nov 2026 updates)
+
+- **Glenwood (Virginia Beach):** added as a fifth area. The note reads "A large planned community near Salem, mostly late-'80s and '90s homes, with its own community association." Billy wrote "Glennwood"; public records and listings spell it **Glenwood** (e.g. Glenwood Way), so the site uses that. Please confirm the note fits how Billy describes it.
+- **School zones:** each city guide now has a "School zones" block linking to the district's official address look-up (Virginia Beach, Chesapeake, Norfolk and Suffolk public schools). It doesn't name or rate schools, which keeps it clear of fair-housing steering concerns. If a district moves its look-up page, update `schools.lookupUrl` in `src/content/neighborhoods.ts`.
+
 ## Still missing
 
 - A public **email address** (the current site doesn't list one).

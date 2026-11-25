@@ -115,14 +115,14 @@ export const home = {
   contact: {
     kicker: "Contact",
     title: { lead: "Get in", em: "touch" } satisfies HomeTitle,
-    body: "Buying, selling, or just have a question? Call, text, or send a note — whatever's easiest for you. Happy to help, even if you're a year away from moving.",
+    body: "Buying, selling, or just have a question? Call, text, or send a note — whatever's easiest for you. Happy to help, even if you are a year away from moving or selling.",
   },
 
   /* Shared with other pages (FaqSection, CtaBand). */
   faq: {
     eyebrow: "FAQs",
     title: { lead: "Questions", muted: "I hear a lot" },
-    lead: "Don't see yours? Call or text me — happy to help, even if you're a year away from moving.",
+    lead: "Don't see yours? Call or text me — happy to help, even if you are a year away from moving or selling.",
   },
   cta: {
     title: { lead: "Ready when", accent: "you are." },

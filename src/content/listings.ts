@@ -64,8 +64,8 @@ export const listings: Listing[] = [
     image: {
       src: "/images/listings/1308-meggett-dr.jpg",
       alt: "Two-story brick colonial home with a two-car garage at 1308 Meggett Dr in Chesapeake, Virginia",
-      width: 2361,
-      height: 1667,
+      width: 2400,
+      height: 1694,
     },
   },
   {

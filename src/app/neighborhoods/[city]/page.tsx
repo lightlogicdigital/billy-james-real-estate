@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LetsTalk } from "@/components/HomeSections";
 import { MotionScope } from "@/components/Motion";
-import { AreasGrid, BillysTake, MoreGuides, NeighborhoodHero, WhyLoveIt } from "@/components/NeighborhoodSections";
+import { AreasGrid, BillysTake, MoreGuides, NeighborhoodHero, SchoolZones, WhyLoveIt } from "@/components/NeighborhoodSections";
 import { getNeighborhood, neighborhoods } from "@/content/neighborhoods";
 
 // Static export: only the four cities are built; anything else is the 404 page.
@@ -33,6 +33,7 @@ export default async function NeighborhoodPage({ params }: PageProps<"/neighborh
       <NeighborhoodHero n={n} />
       <WhyLoveIt n={n} />
       <AreasGrid n={n} />
+      <SchoolZones n={n} />
       <BillysTake n={n} />
       <MoreGuides n={n} />
       <div className="pb-16 pt-8 lg:pb-28 lg:pt-[72px]">

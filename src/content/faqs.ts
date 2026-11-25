@@ -11,7 +11,7 @@ export const faqs: Faq[] = [
   {
     question: "What's it like working with you?",
     answer:
-      "A straight answer, a clear plan, and someone who picks up the phone. I'll keep you updated at every step — showings, offers, inspections, appraisal, and closing — and tell you exactly what I'd do if it were my own home.",
+      "A straight answer, a clear plan, and someone who picks up the phone. I'll keep you updated at every step — showings, offers, inspections, appraisal, and closing — and tell you exactly what I would do if it were my own home.",
     draft: true,
   },
   {

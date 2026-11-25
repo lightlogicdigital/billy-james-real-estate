@@ -82,21 +82,33 @@ export default async function ListingPage({ params }: PageProps<"/listings/[slug
               )}
             </div>
           </div>
-          <div className="relative aspect-[4/3] overflow-hidden rounded-lg md:aspect-[1312/620]" data-parallax-frame>
-            {listing.image ? (
-              <Image
-                src={listing.image.src}
-                alt={listing.image.alt}
-                fill
-                preload
-                sizes="(min-width: 1440px) 1312px, 100vw"
-                className="object-cover"
-                data-parallax-media
-              />
-            ) : (
+          {listing.image ? (
+            // The frame takes the photo's own shape, so the whole house is always shown (never
+            // cropped). Its height is capped so the photo fits on screen below the title (which
+            // ends about 300px down on desktop), and a narrower photo sits centered on a light panel.
+            <div className="flex justify-center overflow-hidden rounded-lg bg-mist">
+              <div
+                className="relative"
+                style={{
+                  aspectRatio: `${listing.image.width} / ${listing.image.height}`,
+                  width: `min(100%, calc(clamp(360px, 100svh - 332px, 760px) * ${listing.image.width / listing.image.height}))`,
+                }}
+              >
+                <Image
+                  src={listing.image.src}
+                  alt={listing.image.alt}
+                  fill
+                  preload
+                  sizes="(min-width: 1440px) 1140px, 100vw"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="relative aspect-[4/3] overflow-hidden rounded-lg md:aspect-[1312/620]">
               <HomeArt variant={index} label="Photo coming soon" />
-            )}
-          </div>
+            </div>
+          )}
           {photoCredit(listing.image) && <p className="-mt-4 text-xs text-muted">{photoCredit(listing.image)}</p>}
         </Container>
       </section>
