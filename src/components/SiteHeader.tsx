@@ -12,7 +12,8 @@ import { CloseIcon, MenuIcon, PhoneIcon, cn } from "./ui";
 
 /**
  * Floating pill nav. On the homepage it sits over the hero photo; elsewhere it
- * rests at the top of the white page.
+ * rests at the top of the white page. On desktop it stays pinned to the top while
+ * the page scrolls (on phones the menu button and call bar stay in reach instead).
  */
 export function SiteHeader() {
   const pathname = usePathname();
@@ -60,7 +61,7 @@ export function SiteHeader() {
     <header
       className={cn(
         "z-30 w-full px-3 text-foreground sm:px-6",
-        overlay ? "absolute inset-x-0 top-0 pt-[18px] sm:pt-[26px]" : "relative pb-2 pt-3 sm:pt-4",
+        overlay ? "absolute inset-x-0 top-0 pt-[18px] sm:pt-[26px] lg:fixed" : "relative pb-2 pt-3 sm:pt-4 lg:sticky lg:top-0",
       )}
     >
       <a
@@ -69,9 +70,16 @@ export function SiteHeader() {
       >
         Skip to content
       </a>
-      <div className="mx-auto flex max-w-[1120px] items-center justify-between gap-4 rounded-full bg-mist/95 py-1.5 pl-2 pr-1.5 backdrop-blur-sm">
+      <div
+        className={cn(
+          // The pill is 52px tall (26px end radius). The 34px round badge sits 9px in on every side and
+          // the 40px Book a Call / menu button 6px in, so both share the pill's curve exactly.
+          "mx-auto flex max-w-[1120px] items-center justify-between gap-4 rounded-full bg-mist/95 py-1.5 pl-[9px] pr-1.5 backdrop-blur-sm transition-shadow duration-300",
+          scrolled && "lg:shadow-[0_8px_24px_rgba(19,37,63,0.14)]",
+        )}
+      >
         <Link href="/" aria-label={`${site.name} — home`} className="shrink-0">
-          <Logo badge={34} />
+          <Logo badge={34} shape="circle" />
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">

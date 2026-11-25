@@ -8,15 +8,30 @@ import { cn } from "./ui";
  */
 
 type Tone = "ink" | "light";
+/**
+ * "square" is the badge itself (23% corners). "circle" is for when it sits inside a pill:
+ * evenly inset in a fully rounded bar, only a circle follows the bar's curve (the nav uses it).
+ */
+type Shape = "square" | "circle";
 
 /** The badge on its own: navy square with a white B (`ink`), or the reverse for dark grounds (`light`). */
-export function LogoBadge({ size, tone = "ink", className }: { size: number; tone?: Tone; className?: string }) {
+export function LogoBadge({
+  size,
+  tone = "ink",
+  shape = "square",
+  className,
+}: {
+  size: number;
+  tone?: Tone;
+  shape?: Shape;
+  className?: string;
+}) {
   const dot = Math.max(2, Math.round(size * 0.11));
   return (
     <span
       aria-hidden
       className={cn("flex shrink-0 items-center justify-center", tone === "ink" ? "bg-foreground text-white" : "bg-white text-foreground", className)}
-      style={{ width: size, height: size, borderRadius: size * 0.23 }}
+      style={{ width: size, height: size, borderRadius: shape === "circle" ? "50%" : size * 0.23 }}
     >
       <span className="flex items-baseline" style={{ paddingLeft: size * 0.09, gap: size * 0.025 }}>
         <span className="font-display font-medium" style={{ fontSize: size * 0.63, lineHeight: 1, letterSpacing: "-0.02em" }}>
@@ -35,17 +50,19 @@ export function LogoBadge({ size, tone = "ink", className }: { size: number; ton
 export function Logo({
   badge,
   tone = "ink",
+  shape = "square",
   descriptor = badge >= 40,
   className,
 }: {
   badge: number;
   tone?: Tone;
+  shape?: Shape;
   descriptor?: boolean;
   className?: string;
 }) {
   return (
     <span className={cn("inline-flex items-center", className)} style={{ gap: badge * 0.25 }}>
-      <LogoBadge size={badge} tone={tone} />
+      <LogoBadge size={badge} tone={tone} shape={shape} />
       <span className="flex flex-col" style={{ gap: badge * 0.07 }}>
         <span
           className={cn("whitespace-nowrap font-display font-medium", tone === "ink" ? "text-foreground" : "text-white")}
